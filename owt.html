@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>oldweb.today</title>
+
+		<meta name="description" content="Web Archiving + Emulation = oldweb.today">
+		<meta name="author" content="Ilya Kreymer, Dragan Espenschied">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>oldweb.today</h1>
+					<h3>Web Archiving + Emulation</h3>
+					<p>Ilya Kreymer &amp; Dragan Espenschied</p>
+                    <p>
+						<img src="img/rhizome-logo-2.png" style="border:0; box-shadow:none;">
+					</p>
+				</section>
+
+				<section>
+					<img src="img/geocities-ia.png">
+				</section>
+
+
+                <section>
+                    <img src="img/geocities-owt.png">
+                </section>
+
+				<section>
+                    <img src="img/owt-browsers.png">
+                </section>
+
+                <section>
+                    <h2>Architecture and Concepts</h2>
+                </section>
+
+                <section>
+                    <h3>Layered System, “Separation of concerns”</h3>
+                    <ul>
+                        <li class="fragment">Web archives provide web pages (Web archives/Memento)</li>
+                        <li class="fragment">Web pages running in Browsers (Emulation)</li>
+                        <li class="fragment">Browsers running in Emulators (Emulation)</li>
+                        <li class="fragment">Emulators running in Containers (Emulation)</li>
+                        <li class="fragment">Containers running in a VM  (Amazon EC2)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Benefits of emulated browsers</h3>
+                    <ul>
+                        <li class="fragment">Complex dynamic site issues (Javascript, cookies, etc…)</li>
+                        <li class="fragment">&lt;blink&gt; tag</li>
+                        <li class="fragment">Legacy software dependencies: Flash, Java, Shockwave, etc…</li>
+                        <li class="fragment">Live Leaks impossible</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Emulators: What is being emulated?</h3>
+                </section>
+                <section>
+                    <h4>Old OSes and Browsers</h4>
+                    <ul>
+                        <li class="fragment">Browser is the platform for web sites (more important than OS itself)</li>
+                        <li class="fragment">Differences from other emulators:
+                            <ul>
+                                <li class="fragment">Gaming, other software emulators require exact timing — not needed here</li>
+                                <li class="fragment">Latency OK</li>
+                                <li class="fragment">New challenges: networked emulators</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h4>Web emulation, not internet emulation</h4>
+                    <ul>
+                        <li class="fragment">HTTP protocol has not changed much since original inception</li>
+                        <li class="fragment">HTTP proxy mode support (and FTP, SOCKS) makes emulation + web archiving</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h4>HTTP Proxy</h4>
+                    <ul>
+                        <li class="fragment">Easy mechanism for serving archived web content instead of original</li>
+                        <li class="fragment">Difficult to configure manually</li>
+                        <li class="fragment">But easy if done if configured in a container</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h4>Containers (Docker)</h4>
+                    <ul>
+                        <li class="fragment">Containers are not VMs</li>
+                        <li class="fragment">Containers provide assembled code+data that can be deployed rapidly</li>
+                        <li class="fragment">Docker provides scheduling, resources sharing and limiting, networking and security</li>
+                        <li class="fragment">Perfect for launching multiple instances of complex systems on same machine (VM)</li>
+                        <li class="fragment"><i>oldweb.today</i> supports roughly 5-6 browser containers per EC2 CPU</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Memento Aggregation</h3>
+                    <ul>
+                        <li class="fragment">Grab data from multiple archives simultaneously</li>
+                        <li class="fragment">Using memento timegate for finding closest match</li>
+                        <li class="fragment">Builds on work with Memento Reconstruct</li>
+                        <li class="fragment">Memento limitations: Only archives supporting unaltered content are considered</li>
+                    </ul>
+                </section>
+
+                <section>
+                    
+                </section>
+
+			</div>
+
+		</div>
+
+        <!-- Footer -->
+        <div style="position:absolute; bottom:1%; left:2%; width:100%">
+            <img width="20%" src="img/rhizome-logo-2.png">
+        </div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
