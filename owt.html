@@ -88,8 +88,7 @@
                 </section>
 
                 <section>
-                    <img style="vertical-align: middle" src="img/owt-browsers.png"/><span style="display: inline-block" class="fragment">
-                    14 Browsers <br/>(+2 "unlisted")</span>
+                    <img style="vertical-align: middle" src="img/owt-browsers.png"/>
                 </section>
 
                 <section>
@@ -98,29 +97,48 @@
                 </section>
 
                 <section>
-                    <h3>Why oldweb.today?</h3>
+                    <h3>Memento Aggregation</h3>
                     <ul>
-                        <li class="fragment">Difficult problems in web archive replay remain</li>
-                        <li class="fragment">A moving target as the web evolves</li>
-                        <li class="fragment">Effectivity of emulation approach: a dozen containers for millions of web pages</li>
+                        <li class="fragment">Uses <a href="https://github.com/oduwsdl/memgator">ODU Memento Aggregator</a> by Sawood Alam</li>
+                        <li class="fragment">Aggregates from multiple TimeGate API calls</li>
+                        <li class="fragment">Finds closest match from available archives</li>
+                        <li class="fragment">Any unaltered web archive can be included</li>
                     </ul>
                 </section>
 
                 <section>
-                    <h4>Web Archive Replay Problems</h4>
-                    <p class="fragment red-right">and Solutions!</p>
+                    <h3>Memento Aggregation</h3>
+                    <div>
+                    <img style="vertical-align: middle" src="img/mementoinfo.png"/>
+                    <span style="display: inline-block">
+                    <ul>
+                        <li class="fragment">Requested date and actual date</li>
+                        <li class="fragment">Count and data range of embeds</li>
+                        <li class="fragment">List the archives used</li>
+                        <li class="fragment">Can surface additional metadata</li>
+                    </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Why oldweb.today?</h3>
+                </section>
+
+                <section>
+                    <h4>Common Web Archive Replay Problems</h4>
+                    <p class="fragment red-right">and possible Solutions!</p>
                     <ul>
                         <li class="fragment strike clear-both">Web Archive 'leaks' to live web</li>
-                        <p class="fragment red-right">Live leaks not possible (Proxy Mode)</p>
+                        <p class="fragment red-right">Live leaks not possible</p>
 
                         <li class="fragment strike clear-both">Improperly rewritten dynamic urls</li>
-                        <p class="fragment red-right">No Rewriting needed! (Proxy mode)</p>
+                        <p class="fragment red-right">No Rewriting needed!</p>
 
-                        <li class="fragment strike clear-both">Pages just don't "look the same" (no &lt;blink&gt;)</li>
-                        <p class="fragment red-right">Use era-appropriate browsers (Emulation)</p>
+                        <li class="fragment strike clear-both">Pages "don't appear the same" (no &lt;blink&gt;, etc..)</li>
+                        <p class="fragment red-right">Use era-appropriate browsers</p>
 
                         <li class="fragment strike clear-both">Flash, Java, Shockwave, other legacy content</li>
-                        <p class="fragment red-right">No problem! (Proxy Mode + Emulation)</p>
+                        <p class="fragment red-right">Pre-configured environments</p>
                     </ul>
                 </section>
 
@@ -131,40 +149,22 @@
                 <section>
                     <h3>A layered Architecture</h3>
                     <ul>
-                        <li class="fragment">Web archives provide web pages (Memento)</li>
-                        <li class="fragment">Web pages running in Browsers (Emulation)</li>
-                        <li class="fragment">Browsers running in Emulators (Emulation)</li>
-                        <li class="fragment">Emulators running in Containers (Emulation)</li>
-                        <li class="fragment">Containers running in a VM (Amazon EC2)</li>
+                        <li class="fragment"><b>Web archives</b> provide <b>Web pages</b></li>
+                        <li class="fragment"><b>Web pages</b> running in <b>Browsers</b></li>
+                        <li class="fragment"><b>Browsers</b> running in Emulators</b></li>
+                        <li class="fragment"><b>Emulators</b> running in Containers</b></li>
+                        <li class="fragment"><b>Containers</b> running in a <b>Virtual Machine</b></li>
+                        <li class="fragment">Screen of container streamed to client</li>
                     </ul>
                 </section>
                 
                 <section>
-                    <h3>Client-Side</h3>
+                    <h3>Differences from Other Emulation Frameworks</h3>
                     <ul>
-                        <li class="fragment">Containers stream screencast to user's browser</li>
-                        <li class="fragment">Using VNC Protocol over WebSockets to draw on HTML5 Canvas</li>
-                        <li class="fragment">All handled nicely by the <a href="https://kanaka.github.io/noVNC/">noVNC</a> JS library</li>
-                        <li class="fragment">Still missing: audio support</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>Emulators: What is being emulated?</h3>
-                </section>
-
-                <section>
-                    <h3>Old Browsers and Operating Systems</h3>
-                    <ul>
+                        <li class="fragment">Designed specifically for web archives</li>
                         <li class="fragment">The browser is the platform for web pages</li>
                         <li class="fragment">The OS is secondary to the browser</li>
-                        <li class="fragment">Differences from other software emulators:
-                            <ul>
-                                <li class="fragment">CPU, OS precision less important</li>
-                                <li class="fragment">Latency OK</li>
-                                <li class="fragment">New challenges: networked emulators</li>
-                            </ul>
-                        </li>
+                        <li class="fragment">Timing latency less significant</li>
                     </ul>
                 </section>
 
@@ -172,19 +172,12 @@
                     <h3>Web (HTTP) emulation</h3>
                     <ul>
                         <li class="fragment">Not general Internet emulation</li>
-                        <li class="fragment">HTTP is our friend here!</li>
-                        <li class="fragment">HTTP Protocol has not changed much over 20 years!</li>
-                        <li class="fragment">HTTP proxy mode support makes emulation + web archiving possible.</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>HTTP Proxy</h3>
-                    <ul>
-                        <li class="fragment">Easy mechanism for serving archived web content instead of original.</li>
-                        <li class="fragment">Prohibitive to configure manually just to view an archive...</li>
+                        <li class="fragment">HTTP Protocol has more of less remained unchanged for 25 years</li>
+                        <li class="fragment">HTTP supports routing all traffic through a 'Proxy Server'</li>
+                        <li class="fragment">Proxy server can be used to served archived content.</li>
+                        <li class="fragment">Difficult to configure manually just to view an archive...</li>
                         <li class="fragment">...but easy if pre-configured in a "container"</li>
-                    </ul>
+                     </ul>
                 </section>
 
                 <section>
@@ -192,36 +185,8 @@
                     <ul>
                         <li class="fragment">More lightweight than VMs, use less resources</li>
                         <li class="fragment">'Contain' programs, data and file systems that can be deployed rapidly</li>
-                        <li class="fragment">Perfect for launching multiple instances of complex systems on same machine (VM)</li>
                         <li class="fragment"><i>oldweb.today</i> supports roughly 5-6 browser containers per EC2 CPU</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3><a href="https://www.docker.com/what-docker">Docker</a></h3>
-                    <ul>
-                        <li class="fragment">Popular open-source container system</li>
-                        <li class="fragment">Manages containers, providing:</li>
-                        <ul style="font-size: 75%">
-                            <li class="fragment">Scheduling, Resource sharing and limits</li>
-                            <li class="fragment">Networking</li>
-                            <li class="fragment">Security</li>
-                            <li class="fragment">Portable Container Image Format</li>
-                            <li class="fragment">Lots of APIs</li>
-                            <li class="fragment">Large, open source community!</li>
-                        </ul>
-                        <br/>
-                        <li class="fragment">No need to "reinvent wheel"</li>
-                    </ul>
-                </section>
-                <section>
-                    <h3>Memento Aggregation</h3>
-                    <ul>
-                        <li class="fragment">Uses <a href="https://github.com/oduwsdl/memgator">ODU Memento Aggregator</a> by Sawood Alam</li>
-                        <li class="fragment">Aggregates from multiple TimeGate API calls</li>
-                        <li class="fragment">Finds closest match from available archives</li>
-                        <li class="fragment">(Almost any) Memento-compatible archive can be included...</li>
-                        <li class="fragment">Almost.. must serve unaltered archived web content</li>
+                        <li class="fragment"><a href="https://www.docker.com/what-docker">Docker</a> is a popular, open-source container system</li>
                     </ul>
                 </section>
 
@@ -412,19 +377,12 @@
                     </section>
                 </section>
 
-
-
                 <section>
-                    <h2>Future Direction</h2>
-                </section>
-
-                <section>
-                    <h3>Fidelity Improvements</h3>
+                    <h3>Future Work</h3>
                     <ul>
-                        <li class="fragment">Sound Support</li>
-                        <li class="fragment">More Browsers</li>
-                        <li class="fragment">Improve Browser Plug-ins, Fonts</li>
-                        <li class="fragment">Only so many browsers that are needed!</li>
+                        <li class="fragment">Audio Support</li>
+                        <li class="fragment">Automated Browser Suggestions</li>
+                        <li class="fragment">Additional and Refined Browser Environments</li>
                     </ul>
                 </section>
 
@@ -432,12 +390,13 @@
                     <h3><i>Webrecorder</i> Integration</h3>
                     <ul>
                         <li class="fragment"><a href="https://webrecorder.io/">Webrecorder</a> is our main development focus</li>
-                        <li class="fragment">Provide high fidelity Web Archiving for All</li>
-                        <li class="fragment"><a target="_blank" href="https://webrecorder.io/record/lol/wut">Fully symmetrical archiving</a></li>
-                        <li class="fragment">Record and replay at highest fidelity with containerized browsers</li>
+                        <li class="fragment">Provides high fidelity Web Archiving for All</li>
+                        <li class="fragment">User-driven, personalized archiving</li>
+                        <li class="fragment"><a target="_blank" href="http://new.webrecorder.io/anonymous/hans-reichel/record/ch_/http://daxo.de">Record and Browse with Containerized Browsers</a></li>
                     </ul>
                 </section>
 
+<!--
                 <section>
                     <section>
                         <h3>Webrecorder Platform Components</h3>
@@ -483,7 +442,7 @@
                         </ul>
                     </section>
                 </section>
-
+-->
                 <section>
                     <p>oldweb.today is 100% open source</p>
                     <p><a href="https://github.com/ikreymer/netcapsule">https://github.com/ikreymer/netcapsule</a></p>
