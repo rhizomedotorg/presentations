@@ -113,7 +113,7 @@
                     <span style="display: inline-block">
                     <ul>
                         <li class="fragment">Requested date and actual date</li>
-                        <li class="fragment">Count and data range of embeds</li>
+                        <li class="fragment">Count and date range of embeds</li>
                         <li class="fragment">List the archives used</li>
                         <li class="fragment">Can surface additional metadata</li>
                     </ul>
@@ -151,20 +151,20 @@
                     <ul>
                         <li class="fragment"><b>Web archives</b> provide <b>Web pages</b></li>
                         <li class="fragment"><b>Web pages</b> running in <b>Browsers</b></li>
-                        <li class="fragment"><b>Browsers</b> running in Emulators</b></li>
-                        <li class="fragment"><b>Emulators</b> running in Containers</b></li>
-                        <li class="fragment"><b>Containers</b> running in a <b>Virtual Machine</b></li>
+                        <li class="fragment"><b>Browsers</b> running in <b>Emulators</b></li>
+                        <li class="fragment"><b>Emulators</b> running in <b>Containers</b></li>
+                        <li class="fragment"><b>Containers</b> running in a <b>VM</b></li>
                         <li class="fragment">Screen of container streamed to client</li>
                     </ul>
                 </section>
                 
                 <section>
-                    <h3>Differences from Other Emulation Frameworks</h3>
+                    <h3>Differences from other Emulation Frameworks</h3>
                     <ul>
                         <li class="fragment">Designed specifically for web archives</li>
                         <li class="fragment">The browser is the platform for web pages</li>
                         <li class="fragment">The OS is secondary to the browser</li>
-                        <li class="fragment">Timing latency less significant</li>
+                        <li class="fragment">Timing latency less critical for the web</li>
                     </ul>
                 </section>
 
@@ -172,9 +172,9 @@
                     <h3>Web (HTTP) emulation</h3>
                     <ul>
                         <li class="fragment">Not general Internet emulation</li>
-                        <li class="fragment">HTTP Protocol has more of less remained unchanged for 25 years</li>
-                        <li class="fragment">HTTP supports routing all traffic through a 'Proxy Server'</li>
-                        <li class="fragment">Proxy server can be used to served archived content.</li>
+                        <li class="fragment">HTTP changed since original 1.0 release</li>
+                        <li class="fragment">HTTP supports routing all traffic through a <i>Proxy Server</i></li>
+                        <li class="fragment">A<i>Proxy Server</i> can be used to serve archived content.</li>
                         <li class="fragment">Difficult to configure manually just to view an archive...</li>
                         <li class="fragment">...but easy if pre-configured in a "container"</li>
                      </ul>
@@ -185,7 +185,7 @@
                     <ul>
                         <li class="fragment">More lightweight than VMs, use less resources</li>
                         <li class="fragment">'Contain' programs, data and file systems that can be deployed rapidly</li>
-                        <li class="fragment"><i>oldweb.today</i> supports roughly 5-6 browser containers per EC2 CPU</li>
+                        <li class="fragment"><i>oldweb.today</i> supports roughly 5-6 browser containers per CPU (Amazon EC2)</li>
                         <li class="fragment"><a href="https://www.docker.com/what-docker">Docker</a> is a popular, open-source container system</li>
                     </ul>
                 </section>
