@@ -115,16 +115,18 @@ Content-Length: 1114
                     <li class="fragment">Video metadata can be retrieved client-side (by pywb JS code)</li>
                     <li class="fragment">Special modifier <i>vi_</i> modifier for fetching video metadata</li>
                     <li class="fragment">Load metadata JSON with <br/><i>http://archive-host/vi_/example.com/video_page.html</i></li>
-                    <li class="fragment">Client can try fetching videos from metadata, until one succeeds</li>
-                    <li class="fragment">Can load video through recording proxy to write it to WARC</li>
+                    <li class="fragment">Client JS can load possible videos from metadata</li>
+                    <li class="fragment">Can load through recording proxy to write to WARC</li>
+                    <li class="fragment">Can load one or many of the available formats</li>
                 </ul>
             </section>
             <section>
                 <h3>Video Metadata Issues</h3>
                 <ul>
-                    <li class="fragment">Lots of special case for various services</li>
-                    <li class="fragment">May need to try may different formats</li>
-                    <li class="fragment">Mostly for Flash video, much less need for this for HTML5</li>
+                    <li class="fragment">Lots of edge cases from different video sites</li>
+                    <li class="fragment">May need to force different Flash player</li>
+                    <li class="fragment">May need to try many different formats</li>
+                    <li class="fragment">Lots of work done for Flash video, less need for HTML5</li>
                 </ul>
             </section>
             <section>
