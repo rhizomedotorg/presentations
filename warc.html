@@ -159,6 +159,29 @@ format: WARC File Format 1.0
                 </ul>
             </section>
             <section>
+                <h3>HTML DOM Snapshots</h3>
+                <ul>
+                    <li class="fragment">Store DOM from the browser</li>
+                    <li class="fragment">Supplemant tradition HTTP request/response records</li>
+                    <li class="fragment">Can 'flatten' dynamic pages for analysis</li>
+                    <li class="fragment">All text is in one page</li>
+                    <li class="fragment">One option: using resource record</li>
+                    <pre class="fragment">
+WARC/1.0
+WARC-Type: resource
+WARC-Record-ID: <urn:uuid:6979e97b-b0f4-427c-90fa-2e9ef49e7173>
+WARC-Date: 2015-07-19T19:03:06Z
+WARC-Target-URI: http://plus.google.com/communities/105126210690761809187
+WARC-Json-Metadata: {"snapshot": "html"}
+WARC-Block-Digest: sha1:cfd5c8b4b88731124ffa3124c9e16cec89d56f53
+Content-Type: text/html
+Content-Length: 1251673
+
+<!DOCTYPE html><html>...
+</pre>
+                </ul>
+            </section>
+            <section>
                 <h3>WARC Signing</h3>
                 <ul>
                     <li class="fragment">Sign a WARC for quick verification of entire file</li>
