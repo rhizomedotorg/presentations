@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>Preservation of Networking Content: Webrecorder and Emulation</title>
+
+        <meta name="description" content="Webrecorder Interoperability">
+        <meta name="author" content="Ilya Kreymer, Mark Beasley">
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+        <!-- Code syntax highlighting -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+
+        <style>
+            .red-right {
+                color: red;
+                float: right;
+                display: inline
+            }
+            .clear-both {
+                clear: both;
+            }
+            .footer-links {
+                display: inline-block;
+                margin-left: 20px;
+                vertical-align: middle;
+                line-height: 1.5em;
+                font-family: sans-serif;
+                font-weight: bold;
+            }
+            .scale-diag {
+                width: 45%;
+                height: 45%
+            }
+
+            .tbl td {
+                text-align: center !important;
+                font-size: 80%;
+            }
+            .reveal pre {
+                line-height: 0.9em;
+                box-shadow: none;
+            }
+        </style>
+
+        <!--[if lt IE 9]>
+<script src="lib/js/html5shiv.js"></script>
+<![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <h3>Preservation of Networking Content</h3>
+                    <h4>Web Recording and Emulation</h4>
+                    <p>Ilya Kreymer</p>
+                    <p>
+                        <img src="img/rhizome-logo-2.png" style="border:0; box-shadow:none;">
+                    </p>
+                </section>
+
+                <section>
+                    <h3>Web Archiving is<br/>Network Traffic Preservation</h3>
+                    <ul>
+                        <li class="fragment">Preserve full HTTP protocol transmission</li>
+                        <li class="fragment">Store full request-&gt;response <i>conversations</i></li>
+                        <li class="fragment">HTTP transmission stored sequentially</li>
+                        <li class="fragment">Standardized ISO WARC format</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Classic Web Archiving Approach</h3>
+                    <ul>
+                        <li class="fragment">Crawling, or <i>harvesting</i> of URLs</li>
+                        <li class="fragment">Crawling policy dictated by complex rules, seeds</li>
+                        <li class="fragment">Great for <i>classic web</i>, static documents w/ hyperlinks</li>
+                        <li class="fragment">Different toolchain for crawling and access</li>
+                    </ul>
+                </section>
+                
+                <section>
+                    <h3>Problems with Classic Approach</h3>
+                    <ul>
+                        <li class="fragment">Crawlers don't run Javascript</li>
+                        <li class="fragment">Crawlers miss dynamic JS-created content</li>
+                        <li class="fragment">Crawlers can't respond to user interaction</li>
+                        <li class="fragment">Crawlers often treat URLs as files to be downloaded</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>URLs are not files!</h3>
+                    <ul>
+                        <li class="fragment">Preserving a URL is preserving one request/response</li>
+                        <li class="fragment"><b>Same</b> URL can represent <b>different</b> content
+                            <ul class="fragment">
+                                <li>Personalized news.google.com, any social media</li>
+                            </ul></li>
+                        <li class="fragment"><b>Different</b> URLs can represent the <b>same</b> content!
+                            <ul class="fragment">
+                                <li>URLs with <i>cache-busting</i> params</li>
+                            </ul></li>
+                        <li class="fragment">URLs may be context dependent</li>
+                        <li class="fragment">Must <b>record</b> URLs in the users' context</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <section data-transition="none">
+                        <h3>Symmetrical Archiving</h3>
+                        <p>Unified architecture to <b>record</b> and <b>replay</b></p>
+                        <p><b>Replay</b> Mode:
+                            <img src="img/WR-play.png" style="margin-top: -150px"></p>
+                    </section>
+                    <section data-transition="none">
+                        <h3>Symmetrical Archiving</h3>
+                        <p>Unified architecture to <b>record</b> and <b>replay</b></p>
+                        <p><b>Record</b> Mode:<br/>
+                            <img src="img/WR-rec.png" style="margin-top: -150px"></p>
+                    </section>
+                    <section data-transition="none">
+                        <h3>Symmetrical Archiving</h3>
+                        <p>Unified architecture to <b>record</b> and <b>replay</b></p>
+                        <p>Using <b>Remote Browsers</b>:
+                            <img src="img/WR-remote.png" style="margin-top: -150px"></p>
+                    </section>
+                </section>
+
+                <section>
+                    <h3>Web Archive Replay</h3>
+                    <ul>
+                        <li class="fragment">A network traffic replay problem</li>
+                        <li class="fragment">Must find "best response" for each request</li>
+                        <li class="fragment">Simplest case: exact URL match
+                            <pre><ol>
+                                <li class="fragment">Request for <b>http://example.com/</b></li>
+                                <li class="fragment">Find 1 exact match for <b>http://example.com/</b></li>
+                                <li class="fragment">Send Archived Response for <b>http://example.com/</b></li>
+                                </ol>
+                            </pre>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Web Archive Replay</h3>
+                    <ul>
+                        <li class="fragment">Fuzzy matching:</li>
+                        <pre><ol>
+                                <li class="fragment">Request for <b>http://example.com/some/path?_=1234</b></li>
+                                <li class="fragment">No Match for <b>http://example.com/some/path?_=1234</b></li>
+                                <li class="fragment">Apply prefix matching, match ignoring query param</li>
+                                <li class="fragment">Found match for <b>http://example.com/some/path?_=5678</b></li>
+                                <li class="fragment">Return capture of <b>http://example.com/some/path?_=5678</b></li>
+                            </ol></pre>
+                        </li>
+                    <li class="fragment">Return a response from different URL response!</li>
+                    </ul>
+                </section>
+
+            <section>
+                <h3>Web Archive Replay Fuzzy Matching</h3>
+                <ul>
+                    <li class="fragment">More difficult cases:</li>
+                    <li class="fragment">Match some query arguments, ignore others</li>
+                    <li class="fragment">Match by HTTP payload (POST, PUT)</li>
+                    <li class="fragment">Match by header, custom format</li>
+                    <li class="fragment">No single solution, need context-dependent rules</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Challenges Ahead: Video</h3>
+                <ul>
+                    <li class="fragment">Adaptive streaming formats (DASH, HLS)</li>
+                    <li class="fragment">One video is not one URL</li>
+                    <li class="fragment">Video consists of multiple chunks</li>
+                    <li class="fragment">Each chunk may be one of several URLs</li>
+                    <li class="fragment"><a href="https://webrecorder.io/demo/bbc-video/">Example: BBC Video</a></li>
+                    <li class="fragment"><a href="https://webrecorder.io/demo/housesitin">Example: Live Stream</a></li>
+                </ul>
+            </section>
+            
+            <section>
+                <h3>Challenges Ahead: Mobile</h3>
+                <ul>
+                    <li class="fragment">Mobile Web Content</li>
+                    <li class="fragment">Mobile Apps</li>
+                    <li class="fragment"><a href="https://techcrunch.com/2017/04/03/statcounter-android-windows/">Report: Android overtakes Windows as the internet’s most used operating system</a> <small style="vertical-align: bottom">(TechCrunch)</small></li>
+                    <li class="fragment">Can't ignore the mobile web!</li>
+                </ul>
+            </section>
+            
+            <section>
+                <section data-transition="none">
+                    <h3>Symmetrical Archiving</h3>
+                    <p>Unified architecture to <b>record</b> and <b>replay</b></p>
+                    <p>Using <b>Remote Browsers</b>:
+                        <img src="img/WR-remote.png" style="margin-top: -150px"></p>
+                </section>
+                <section data-transition="none">
+                    <h3>Symmetrical Archiving</h3>
+                    <p>Unified architecture to <b>record</b> and <b>replay</b></p>
+                    <p>Using <b>Remote Android Emulator!</b>
+                        <img src="img/WR-android.png" style="margin-top: -150px"></p>
+                </section>
+            </section>
+            
+            <section>
+                <h3>Demo: Web Archive + Android Emulator</h3>
+                <ul>
+                    <li class="fragment">Record / Replay Mobile Web Traffic to WARC</li>
+                    <li class="fragment">Record / Replay Mobile App Traffic to WARC?</li>
+                    <li class="fragment">Emulators are not just for old software</li>
+                    <li class="fragment">Network request/response matching can be challenging</li>
+                </ul>
+            </section>
+            
+            <section>
+                <h3>Thank you!</h3>
+                <br/>
+                <h4>Questions?</h4>
+            </section>
+
+        </div>
+
+        </div>
+
+    <!-- Footer -->
+    <div style="position:absolute; bottom:1%; left:2%; width:100%; vertical-align: middle">
+        <img style="vertical-align: middle; width: 48px; height: 48px" src="img/wr-logo.png">
+        <img style="vertical-align: middle" width="18%" src="img/wr-text.png">
+        <span class="footer-links">
+            <a href="https://webrecorder.io/" target="_blank">webrecorder.io</a><br/>
+            <a href="http://rhizome.org/" target="_blank">rhizome.org</a>
+        </span>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+
+        // Full list of configuration options available at:
+        // https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+            margin: 0.05,
+
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+            // Optional reveal.js plugins
+            dependencies: [
+                { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                { src: 'plugin/zoom-js/zoom.js', async: true },
+                { src: 'plugin/notes/notes.js', async: true }
+            ]
+        });
+
+    </script>
+
+    </body>
+</html>
+g
