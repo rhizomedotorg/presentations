@@ -30,6 +30,10 @@
         </script>
 
         <style>
+            ul {
+                text-align: left !important;
+                display: block !important;
+            }
             .clear-both {
                 clear: both;
             }
@@ -56,19 +60,27 @@
             }
             .threat {
                 text-transform: uppercase;
+                text-align: left;
                 color: crimson;   
             }
             .concern {
                 text-transform: uppercase;
+                text-align: left;
                 color: orange;
             }
             .miti {
                 text-transform: uppercase;
+                text-align: left;
                 color: green;
             }
-
             .extra-pad {
                 margin-bottom: 30px !important;
+            }
+            .footer-text {
+                font-size: 28px;
+                margin-left: 50px;
+                font-family: sans-serif;
+                display: inline;
             }       
         </style>
 
@@ -129,52 +141,150 @@
                         <li class="fragment">Untrusted content accessed from web archive domain</li>
                         <li class="fragment extra-pad">Separate domains:
                             <ul>
-                            <li>http://example-domain-A.com/</li>
-                            <li>http://example-domain-B.com/</li>
+                            <li><i>http://example-domain-A.com/</i></li>
+                            <li><i>http://example-domain-B.com/</i></li>
                             </ul>
                         </li>
                         <li class="fragment extra-pad">Rewritten replay, same domain:
                             <ul>
-                            <li>http://example.com/http://example-domain-A.com/</li>
-                            <li>http://example.com/http://example-domain-B.com/</li>
+                            <li><i>http://example.com/http://example-domain-A.com/</i></li>
+                            <li><i>http://example.com/http://example-domain-B.com/</i></li>
                             </ul>
                         </li>
                         <li class="fragment">Standard cross-domain protections do not apply!</li>
                     </ul>
                 </section>
                 <section>
-                    <p class="threat">Threat: Cross-Domain Cookie/Storage Access</p>
+                    <p class="threat">Threat: Cross-Domain Cookie Access</p>
                     <ul>
-                        <li class="fragment">One site can access cookies or local storage of another</li>
-                        <li class="fragment">More concern on capture, but also on replay</li>
+                        <li class="fragment">Cookies of rewritten page may be accessible to other rewritten pages</li>
                     </ul>
-                    <p class="concern fragment">Possible Mitigation: Cookie Rewriting</p>
+                    <p class="miti fragment">Mitigation: Rewriting</p>
                     <ul>
-                        <li class="fragment">Rewriting system isolates cookies and local storage per host</li>
-                        <li class="fragment">Domain wildcard cookies?</li>
-                        <li class="fragment">Not foolproof</li>
+                        <li class="fragment">Rewrite cookies to exact path only</li>
+                    </ul>
+                    <p class="concern fragment">Concern: Domain Cookies</p>
+                    <ul>
+                        <li class="fragment">Domain wildcard *.example.com cookies?</li>
+                        <li class="fragment">Client-side created cookies"</li>
                     </ul>
                 </section>
- 
+                <section>
+                    <p class="threat">Threat: Local Storage Access</p>
+                    <ul>
+                        <li class="fragment">All local/session storage bucketed by host</li>
+                        <li class="fragment">Different sites can access, collide on storage keys</li>
+                    </ul>
+                    <p class="miti fragment">Mitigation: Additional Bucketing</p>
+                    <ul>
+                        <li class="fragment">Add host to storage key to bucket by host</li>
+                    </ul>
+                    <p class="concern fragment">Concern: Storage Overflow</p>
+                    <ul>
+                        <li class="fragment">Space for local/session storage is limited, per host.</li>
+                        <li class="fragment">One site may use up all the storage space still</li>
+                    </ul>
+                </section>
+                <section>
+                    <p class="threat">Threat: Cookie Overflow</p>
+                    <ul>
+                        <li class="fragment">One page can wipe all cookies on a domain</li>
+                        <li class="fragment">Keep setting new cookies via <code>document.cookie</code> until old ones are dropped.</li>
+                    </ul>
+                    <p class="threat fragment">No Mitigation</p>
+                    <ul>
+                        <li class="fragment">Not possible to prevent cookie overflow!</li>
+                    </ul>
+                </section>
+                <section>
+                    <p class="concern">Concern: web archive running on subdomain</p>
+                    <ul>
+                        <li class="fragment"><i>http://example.com/</i> is the main institution home page</li>
+                        <li class="fragment"><i>http://archive.example.com/</i> is a web archive</li>
+                        <li class="fragment">An archived page could pose a threat to the parent domain</li>
+                        <li class="fragment"><i>document.domain</i> can be set to parent domain</li>
+                    </ul>
+                </section>
+                <section>
+                    <p class="threat">Threat: Session hijacking/manipulation</p>
+                    <ul>
+                        <li class="fragment"><b>http://archive.example.com/replay/evil.html</b> changes origin to parent domain</li>
+                        <li class="fragment">Archived page can now access <b>http://example.com/</b></li>
+                        <li class="fragment">If user logged in, evil archived page can act as logged in user to <b>http://example.com/</b></li>
+                        <li class="fragment">Can manipulate session, overflow cookies, etc...</li>
+                    </ul>
+                    <p class="miti fragment">Mitigation: Run web archive on separate domain</p>
+                    <p class="miti fragment">Mitigation: Run archive in containerized/proxy mode browser</p>
+                </section>
+                <section>
+                    <p class="miti">Recommendation: Keep Web Archive Content Isolated</p>
+                    <ul>
+                        <li class="fragment">Use iframes for replay/capture of content</li>
+                        <li class="fragment">Load web archive app from "app domain"</li>
+                        <li class="fragment">Load iframe content from "content domain"</li>
+                        <li class="fragment extra-pad">Webrecorder example:
+                            <ul>
+                            <li><i>https://webrecorder.io/</i> -- app domain</li>
+                            <li><i>https://wbrc.io/</i> -- content domain</li>
+                            </ul>
+                        </li>
+                        <li class="fragment extra-pad">Perma.cc example:
+                            <ul>
+                            <li><i>https://perma.cc/</i> -- app domain</li>
+                            <li><i>https://perma-archives.org/</i> -- content domain</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <p class="threat">Threat: Live Web Leakage</p>
+                    <ul>
+                        <li class="fragment">Accessing live web when page presented as archival undermines credibility</li>
+                        <li class="fragment">Malicious page can access live web to mislead, load alternative content</li>
+                    </ul>
+                    <p class="miti fragment">Mitigation: Content-Security-Policy header can limit access to web archive domain</p>
+                    <p class="miti fragment">Mitigation: Run archive in containerized/proxy mode browser</p>
+                </section>
+                <section>
+                    <p class="threat">Threat: Anti-archiving anti-rewriting measures</p>
+                    <ul>
+                        <li class="fragment">URL rewriting replay is sophisticated but not foolproof</li>
+                        <li class="fragment">Determined advesary could detect if page is running in url rewriting mode</li>
+                        <li class="fragment">Impossible to detect every challenge</li>
+                    </ul>
+                    <p class="miti fragment">Mitigation: Don't use rewriting mode for capture/replay</p>
+                    <ul>
+                        <li class="fragment">Use containerized/proxy mode browser for capture/replay</li>
+                    </ul>
+                </section>
+                 <section>
+                    <h2>What's next?</h2>
+                    <ul>
+                        <li class="fragment">An overview of known threats and mitigations</li>
+                        <li class="fragment">What challenges remain?</li>
+                        <li class="fragment">Need tools for web archive security research</li>
+                        <li class="fragment">Challenges researchers to find security issues with web archive deployment</li>
+                        <li class="fragment"><h3>Introducing: <a href="https://github.com/jcushman/warcgames">Warcgames</a></h3></li>
+                    </ul>
+                </section>
                 <section>
                     <h3>Thank you!</h3>
                     <br/>
                     <h4>Questions?</h4>
                 </section>
-
             </div>
-
         </div>
 
     <!-- Footer -->
     <div style="position:absolute; bottom:1%; left:2%; width:100%; vertical-align: middle">
-        <img style="vertical-align: middle; width: 48px; height: 48px" src="img/wr-logo.png">
-        <img style="vertical-align: middle" width="18%" src="img/wr-text.png">
+        <a href="https://webrecorder.io/"><img style="vertical-align: middle; width: 48px; height: 48px" src="img/wr-logo.png">
+        <img style="vertical-align: middle" width="18%" src="img/wr-text.png"></a>
         <!--<span class="footer-links">
             <a href="https://webrecorder.io/" target="_blank">webrecorder.io</a><br/>
             <a href="http://rhizome.org/" target="_blank">rhizome.org</a>
         </span>-->
-        <img style="vertical-align: middle" src="img/perma_logo.png"/>
+        <a href="https://perma.cc/"><img style="vertical-align: middle" src="img/perma_logo.png"/></a>
+        <p class="footer-text">Web Archive Security</p>
         <!--<span class="footer-links">
             <a href="https://perma.cc/" target="_blank">Perma.cc</a>
         </span>-->
@@ -191,7 +301,7 @@
             controls: true,
             progress: true,
             history: true,
-            center: true,
+            center: false,
             margin: 0.05,
 
             transition: 'slide', // none/fade/slide/convex/concave/zoom
