@@ -15,11 +15,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
         <link rel="stylesheet" href="css/reveal.css">
-        <link rel="stylesheet" href="css/theme/white.css" id="theme">
+        <link rel="stylesheet" href="css/theme/white_styled.css" id="theme">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 
         <!-- Code syntax highlighting -->
         <link rel="stylesheet" href="lib/css/zenburn.css">
 
+                <!-- CUSTOM STYLE -->
+                <link rel="stylesheet" href="css/theme/white_styled.css" id="theme">
+                <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
         <!-- Printing and PDF exports -->
         <script>
             var link = document.createElement( 'link' );
@@ -59,19 +63,31 @@
                 box-shadow: none;
             }
             .threat {
-                text-transform: uppercase;
+                /*text-transform: uppercase;*/
                 text-align: left;
-                color: crimson;
+                color: crimson !important;
             }
             .concern {
-                text-transform: uppercase;
+                /*text-transform: uppercase;*/
                 text-align: left;
                 color: orange;
             }
             .miti {
-                text-transform: uppercase;
+                /*text-transform: uppercase;*/
                 text-align: left;
                 color: green;
+            }
+            .caps-label{
+              text-transform:uppercase!important;
+              font-size: 50%!important;
+              font-weight: 500!important;
+              display: block;
+              margin-bottom: -0.4em!important;
+            }
+            .url {
+              font-family: courier, monospace;
+              font-size: 90%;
+              color: darkBlue;
             }
             .extra-pad {
                 margin-bottom: 30px !important;
@@ -96,8 +112,8 @@
             <!-- Any section element inside of this container is displayed as a slide -->
             <div class="slides">
                 <section>
-                    <h4>Thinking like a hacker:</h4>
-                    <h3>Security considerations for<br/>High-Fidelity Web Archives</h3>
+                    <h4 style="padding-top: 12%; margin-bottom: 0.01rem">Thinking like a hacker<span style="margin-left:4px">:</span></h4>
+                    <h3>Security Considerations for<br/>High-Fidelity Web Archives</h3>
                     <p>Jack Cushman, Perma.cc</p>
                     <p>Ilya Kreymer, Webrecorder</p>
                 </section>
@@ -116,10 +132,10 @@
                         <li class="fragment"><b>Web archive replay can pose new security risks</b></li>
                     </ul>
                 </section>
-				
+
                 <section>
                     <h3>So our challenge:</h3>
-                    <h3 class="threat">What if example.com, but evil?</h3>
+                    <h3>What if example.com, <span style="color: crimson; font-style: italic; font-weight: 500; text-transform: uppercase">but evil?</span></h3>
 					<p>[macro image?]</p>
                 </section>
 
@@ -139,17 +155,17 @@
 				<!-- UNAUTHORIZED CAPTURE -->
 
                 <section>
-                    <p class="threat">Threat: Archiving local server files</p>
+                    <p class="threat"><span class="caps-label">Threat:</span> Archiving local content</p>
                     <ul>
                         <li class="fragment">Capture system could have privileged access:</li>
                             <ul>
-                            <li class="fragment">Local ports: <i>http://localhost:8080/</i></li>
-                            <li class="fragment">Network port: <i>http://private-server/</i></li>
-                            <li class="fragment">Local files: <i>file:///etc/passwd</i></li>
+                            <li class="fragment">Local ports: <i class="url">http://localhost:8080/</i></li>
+                            <li class="fragment">Network server: <i class="url">http://private-server/</i></li>
+                            <li class="fragment">Local files: <i class="url">file:///etc/passwd</i></li>
                             </ul>
                          <li class="fragment">Could capture private resources, into a public archive</li>
                    </ul>
-                    <p class="miti fragment">Mitigation: Network Filtering + Sandboxing</p>
+                    <p class="miti fragment"><span class="caps-label"><span class="caps-label">Mitigation:</span></span>Network Filtering + Sandboxing</p>
                     <ul>
                         <li class="fragment">Don't allow capture of local ip ranges</li>
                         <li class="fragment">Restrict to http(s) protocol</li>
@@ -157,22 +173,22 @@
                     </ul>
                 </section>
                 <section>
-                    <p class="threat">Threat: Hacking the headless browser</p>
+                    <p class="threat"><span class="caps-label">Threat:</span>Hacking the headless browser</p>
                     <ul>
                         <li class="fragment">Modern captures may use PhantomJS or other browsers on the server</li>
                         <li class="fragment">Most browsers have known exploits</li>
 					</ul>
-                    <p class="miti fragment">Mitigation: Sandboxing</p>
+                    <p class="miti fragment"><span class="caps-label">Mitigation:</span> Sandboxing</p>
                     <ul>
                         <li class="fragment">Run capture system in isolated virtual machine</li>
                         <li class="fragment">Keep VM up to date</li>
                     </ul>
                 </section>
-                     
+
 				<!-- PASSWORD-PROTECTED CAPTURE -->
-					 
+
                 <section>
-                    <p class="threat">Threat: Stealing user secrets during capture</p>
+                    <p class="threat"><span class="caps-label">Threat:</span>Stealing user secrets during capture</p>
                     <ul>
                         <li class="fragment">Normal web flow:</li>
                             <ul>
@@ -193,22 +209,22 @@
                     </ul>
                 </section>
                 <section data-transition="none">
-                    <p class="threat">Threat: Stealing user secrets during capture</p>
-                    <p class="concern fragment">(Partial) mitigation: Rewriting</p>
+                    <p class="threat"><span class="caps-label">Threat:</span>Stealing user secrets during capture</p>
+                    <p class="concern fragment"><span class="caps-label">Partial Mitigation:</span> Rewriting</p>
                     <ul>
                         <li class="fragment">Rewrite cookies to exact path only</li>
                         <li class="fragment">Rewrite javascript</li>
                     </ul>
-                    <p class="miti fragment">(Full) mitigation: Remote browser</p>
+                    <p class="miti fragment"><span class="caps-label">Mitigation:</span> Remote browser</p>
                     <ul>
                         <li class="fragment">Run capture in containerized/proxy mode browser</li>
                     </ul>
                 </section>
-				
+
 				<!-- HOSTING REPLAYS AND LOGINS ON SAME SITE -->
-				
+
                 <section>
-                    <p class="threat">Threat: Cross site scripting to steal archive logins</p>
+                    <p class="threat"><span class="caps-label">Threat:</span>Cross site scripting to steal archive logins</p>
                     <ul>
                         <li class="fragment"><i>http://myarchive.com/<b>login</b></i> is the main institution login page</li>
                         <li class="fragment"><i>http://myarchive.com/<b>web/http://evil.com</b></i> is a web archive</li>
@@ -220,7 +236,7 @@
                     </ul>
                 </section>
                 <section>
-                    <p class="threat">Threat: Cross site scripting to steal archive logins<br>...across subdomains</p>
+                    <p class="threat"><span class="caps-label">Threat:</span>Cross site scripting to steal archive logins<br>...across subdomains</p>
                     <ul>
                         <li class="fragment"><i>http://myarchive.com/<b>login</b></i> is the main institution login page</li>
                         <li class="fragment"><i>http://<b>web</b>.myarchive.com/http://evil.com</i> is a web archive</li>
@@ -233,7 +249,7 @@
                     </ul>
                 </section>
                 <section>
-                    <p class="miti fragment">Mitigation: Run web archive on separate domain</p>
+                    <p class="miti fragment"><span class="caps-label">Mitigation:</span> Run web archive on separate domain</p>
                     <ul>
                         <li class="fragment">Use iframes for replay/capture of content</li>
                         <li class="fragment">Load web archive app from "app domain"</li>
@@ -252,37 +268,37 @@
                         </li>
                     </ul>
                 </section>
-				
+
 				<!-- CONTENT-BASED SHENANIGANS -->
-				
+
 				<section>
-                    <p class="threat">Threat: Live web leakage on playback</p>
+                    <p class="threat"><span class="caps-label">Threat:</span>Live web leakage on playback</p>
                     <ul>
                         <li class="fragment">Javascript can send messages to evil.com and fetch new content</li>
                         <li class="fragment">... to mislead, track users, or rewrite history</li>
 						<li class="fragment">(<b>Bonus</b> for private archives -- any of your captures could export any of your other captures)</li>
                     </ul>
-                    <p class="miti fragment">Mitigation: Content-Security-Policy header can limit access to web archive domain</p>
+                    <p class="miti fragment"><span class="caps-label">Mitigation:</span> Content-Security-Policy header can limit access to web archive domain</p>
                 </section>
 				<section>
-                    <p class="threat">Threat: Show different page contents when archived</p>
+                    <p class="threat"><span class="caps-label">Threat:</span>Show different page contents when archived</p>
                     <ul>
                         <li class="fragment">Pages can tell they're in an archive and act differently</li>
                     </ul>
-                    <p class="miti fragment">Mitigation: Run archive in containerized/proxy mode browser</p>
+                    <p class="miti fragment"><span class="caps-label">Mitigation:</span> Run archive in containerized/proxy mode browser</p>
                 </section>
 				<section>
-                    <p class="threat">Threat: Fake banner data</p>
+                    <p class="threat"><span class="caps-label">Threat:</span>Fake banner data</p>
                     <ul>
                         <li class="fragment">Pages can fake the archive's banner</li>
                     </ul>
-                    <p class="concern fragment">Mitigation (partial): iframe sandbox</p>
-                    <p class="miti fragment">Mitigation (full): Run archive in containerized/proxy mode browser</p>
+                    <p class="concern fragment"><span class="caps-label">Mitigation (partial):</span> iframe sandbox</p>
+                    <p class="miti fragment"><span class="caps-label">Mitigation (full):</span> Run archive in containerized/proxy mode browser</p>
                 </section>
-				
-				
+
+
                 <section>
-                    <h2>What's next?</h2>
+                    <h3 style="margin-top:12%">What's next?</h3>
                     <ul>
                         <li class="fragment">Build tools for web archive security research</li>
                         <li class="fragment">Challenge researchers to find security issues</li>
@@ -290,7 +306,7 @@
                     </ul>
                 </section>
                 <section>
-                    <h3>Thank you!</h3>
+                    <h3 style="margin-top:15%">Thank you!</h3>
                     <br/>
                     <h4>Questions?</h4>
                 </section>
