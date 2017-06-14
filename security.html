@@ -143,9 +143,9 @@
                         <li class="fragment">Possible to capture local private resources, into a public archive</li>
                         <li class="fragment">How does your archive handle these URLs?</li>
                             <ul>
-                            <li>Local services: <i>http://127.0.0.1:8000/</i></li>
-                            <li>Network scanning: <i>http://192.168.1.100/</i></li>
-                            <li>File access: <i>file:///etc/passwd</i></li>
+                            <li class="fragment">Local services: <i>http://127.0.0.1:8000/</i></li>
+                            <li class="fragment">Network scanning: <i>http://192.168.1.100/</i></li>
+                            <li class="fragment">File access: <i>file:///etc/passwd</i></li>
                             </ul>
                     </ul>
                     <p class="miti fragment">Mitigation: Network Filtering</p>
@@ -172,14 +172,14 @@
                     <ul>
                         <li class="fragment">Normal web flow:</li>
                             <ul>
-                            <li><i>https://twitter.com/login</i></li>
-                            <li><i>https://doubleclick.com/some-ad</i></li>
+                            <li class="fragment"><i>https://twitter.com/login</i></li>
+                            <li class="fragment"><i>https://doubleclick.com/some-ad</i></li>
                             </ul>
                         </li>
                         <li class="fragment extra-pad">During capture and replay:
                             <ul>
-                            <li><i>https://webrecorder.io/<b>https://twitter.com/login</b></i></li>
-                            <li><i>https://webrecorder.io/<b>https://doubleclick.com/some-ad</b></i></li>
+                            <li class="fragment"><i>https://webrecorder.io/<b>https://twitter.com/login</b></i></li>
+                            <li class="fragment"><i>https://webrecorder.io/<b>https://doubleclick.com/some-ad</b></i></li>
                             </ul>
                         </li>
                         <li class="fragment">Standard cross-domain protections do not apply!</li>
@@ -225,7 +225,7 @@
                     <p class="fragment concern">No?</p>
                     <ul>
 						<li class="fragment">In some browsers, evil.com may still be able to steal login cookie</li>
-						<li class="fragment">In <b>all</b> browsers, evil.com can wipe cookies for example.com and replace, unexpdectedly logging in admin as attacker</li>
+						<li class="fragment">In <b>all</b> browsers, evil.com can wipe and replace cookies</li>
                     </ul>
                 </section>
                 <section>
@@ -257,6 +257,7 @@
                     <ul>
                         <li class="fragment">Accessing live web when page presented as archival undermines credibility</li>
                         <li class="fragment">Malicious page can access live web to mislead, track users, load alternative content</li>
+						<li class="fragment">(<b>Bonus</b> for private archives -- any of your captures could exfiltrate any of your other captures)</li>
                     </ul>
                     <p class="miti fragment">Mitigation: Content-Security-Policy header can limit access to web archive domain</p>
                     <p class="miti fragment">Mitigation: Run archive in containerized/proxy mode browser</p>
@@ -271,7 +272,7 @@
 				<section>
                     <p class="threat">Threat: Content-based hijinks: Fake header data</p>
                     <ul>
-                        <li class="fragment">Pages can fake the archive's header style to pretend to be archived on a different date, or phish login credentials</li>
+                        <li class="fragment">Pages can fake the archive's banner to pretend to be archived on a different date, or phish login credentials</li>
                     </ul>
                     <p class="miti fragment">Mitigation (partial): iframe sandbox</p>
                     <p class="miti fragment">Mitigation (full): Run archive in containerized/proxy mode browser</p>
