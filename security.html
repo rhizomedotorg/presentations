@@ -63,20 +63,31 @@
                 box-shadow: none;
             }
             .threat {
-                text-transform: uppercase;
+                /*text-transform: uppercase;*/
                 text-align: left;
-                font-style: italic !important;
                 color: crimson !important;
             }
             .concern {
-                text-transform: uppercase;
+                /*text-transform: uppercase;*/
                 text-align: left;
                 color: orange;
             }
             .miti {
-                text-transform: uppercase;
+                /*text-transform: uppercase;*/
                 text-align: left;
                 color: green;
+            }
+            .caps-label{
+              text-transform:uppercase!important;
+              font-size: 50%!important;
+              font-weight: 500!important;
+              display: block;
+              margin-bottom: -0.4em!important;
+            }
+            .url {
+              font-family: courier, monospace;
+              font-size: 90%;
+              color: darkBlue;
             }
             .extra-pad {
                 margin-bottom: 30px !important;
@@ -124,7 +135,7 @@
 
                 <section>
                     <h3>So our challenge:</h3>
-                    <h3>What if example.com, <span class="threat">but evil?</span></h3>
+                    <h3>What if example.com, <span style="color: crimson; font-style: italic; font-weight: 500; text-transform: uppercase">but evil?</span></h3>
 					<p>[macro image?]</p>
                 </section>
 
@@ -142,15 +153,15 @@
 				<!-- UNAUTHORIZED CAPTURE -->
 
                 <section>
-                    <p class="threat">Threat: Stealing server secrets</p>
+                    <p class="threat"><span class="caps-label">Threat:</span> Stealing server secrets</p>
                     <ul>
                         <li class="fragment">Capture system may have priveleged access to local network</li>
                         <li class="fragment">Possible to capture local private resources, into a public archive</li>
                         <li class="fragment">How does your archive handle these URLs?</li>
                             <ul>
-                            <li class="fragment">Local services: <i>http://127.0.0.1:8000/</i></li>
-                            <li class="fragment">Network scanning: <i>http://192.168.1.100/</i></li>
-                            <li class="fragment">File access: <i>file:///etc/passwd</i></li>
+                            <li class="fragment">Local services: <i class="url">http://127.0.0.1:8000/</i></li>
+                            <li class="fragment">Network scanning: <i class="url">http://192.168.1.100/</i></li>
+                            <li class="fragment">File access: <i class="url">file:///etc/passwd</i></li>
                             </ul>
                     </ul>
                     <p class="miti fragment">Mitigation: Network Filtering</p>
@@ -285,7 +296,7 @@
 
 
                 <section>
-                    <h2>What's next?</h2>
+                    <h3 style="margin-top:12%">What's next?</h3>
                     <ul>
                         <li class="fragment">Build tools for web archive security research</li>
                         <li class="fragment">Challenge researchers to find security issues</li>

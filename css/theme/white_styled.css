@@ -119,7 +119,9 @@ body {
   margin-left: 40px; }
 
 .reveal li {
+    font-size: 1.4rem;
     font-weight: 400;
+    margin-bottom: 0.8rem;
 }
 
 .reveal dt {
