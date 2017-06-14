@@ -125,43 +125,47 @@
 
                 <section>
                     <h3>Possible security threats</h3>
-                    <ul>
-                        <li class="fragment">Stealing server secrets</li>
-		                <li class="fragment">Stealing user secrets during capture</li>
-                        <li class="fragment">Stealing admin user secrets</li>
-                        <li class="fragment">Content-based hijinks</li>
-                    </ul>
+                    <ol class="fragment">
+						<li>Archiving local server files</li>
+						<li>Hacking the headless browser</li>
+						<li>Stealing user secrets during capture</li>
+						<li>Cross site scripting to steal archive logins</li>
+						<li>Live web leakage on playback</li>
+						<li>Show different page contents when archived</li>
+						<li>Fake banner data</li>
+                    </ol>
                 </section>
 
 				<!-- UNAUTHORIZED CAPTURE -->
 
                 <section>
-                    <p class="threat">Threat: Stealing server secrets</p>
+                    <p class="threat">Threat: Archiving local server files</p>
                     <ul>
-                        <li class="fragment">Capture system may have privileged access to local network</li>
-                        <li class="fragment">Possible to capture local private resources, into a public archive</li>
-                        <li class="fragment">How does your archive handle these URLs?</li>
+                        <li class="fragment">Capture system could have privileged access:</li>
                             <ul>
-                            <li class="fragment">Local services: <i>http://127.0.0.1:8000/</i></li>
-                            <li class="fragment">Network scanning: <i>http://192.168.1.100/</i></li>
-                            <li class="fragment">File access: <i>file:///etc/passwd</i></li>
+                            <li class="fragment">Local ports: <i>http://localhost:8080/</i></li>
+                            <li class="fragment">Network port: <i>http://private-server/</i></li>
+                            <li class="fragment">Local files: <i>file:///etc/passwd</i></li>
                             </ul>
-                    </ul>
-                    <p class="miti fragment">Mitigation: Network Filtering</p>
+                         <li class="fragment">Could capture private resources, into a public archive</li>
+                   </ul>
+                    <p class="miti fragment">Mitigation: Network Filtering + Sandboxing</p>
                     <ul>
                         <li class="fragment">Don't allow capture of local ip ranges</li>
                         <li class="fragment">Restrict to http(s) protocol</li>
+                        <li class="fragment">Run capture in isolated container/VM</li>
                     </ul>
                 </section>
                 <section>
-                    <p class="threat">Threat: Stealing server secrets 2</p>
+                    <p class="threat">Threat: Hacking the headless browser</p>
                     <ul>
-                        <li class="fragment">Is the server-side capture browser up to date?</li>
-                        <li class="fragment">(maybe you're using PhantomJS for a good capture -- or Netscape Navigator)</li>
+                        <li class="fragment">Modern captures may use PhantomJS or other browsers on the server</li>
+                        <li class="fragment">Most browsers have known exploits</li>
 					</ul>
                     <p class="miti fragment">Mitigation: Sandboxing</p>
                     <ul>
                         <li class="fragment">Run capture system in isolated virtual machine</li>
+                        <li class="fragment">Keep VM up to date</li>
                     </ul>
                 </section>
                      
@@ -176,10 +180,10 @@
                             <li class="fragment"><i>https://doubleclick.com/some-ad</i></li>
                             </ul>
                         </li>
-                        <li class="fragment extra-pad">During capture and replay:
+                        <li class="fragment extra-pad">During Webrecorder interactive capture:
                             <ul>
                             <li class="fragment"><i>https://webrecorder.io/record/<b>https://twitter.com/login</b></i></li>
-                            <li class="fragment"><i>https://webrecorder.io/record/<b>https://doubleclick.com/some-ad</b></i></li>
+                            <li class="fragment"><i>https://webrecorder.io/record/<b>https://doubleclick.com/evil-ad</b></i></li>
                             </ul>
                         </li>
                         <li class="fragment">Standard cross-domain protections do not apply!</li>
@@ -204,10 +208,10 @@
 				<!-- HOSTING REPLAYS AND LOGINS ON SAME SITE -->
 				
                 <section>
-                    <p class="threat">Threat: Stealing admin user secrets (same domain)</p>
+                    <p class="threat">Threat: Cross site scripting to steal archive logins</p>
                     <ul>
-                        <li class="fragment"><i>http://example.com/<b>login</b></i> is the main institution login page</li>
-                        <li class="fragment"><i>http://example.com/<b>archive/http://evil.com</b></i> is a web archive</li>
+                        <li class="fragment"><i>http://myarchive.com/<b>login</b></i> is the main institution login page</li>
+                        <li class="fragment"><i>http://myarchive.com/<b>web/http://evil.com</b></i> is a web archive</li>
                         <li class="fragment">safe?</li>
                     </ul>
                     <p class="fragment threat">No!</p>
@@ -216,15 +220,15 @@
                     </ul>
                 </section>
                 <section>
-                    <p class="threat">Threat: Stealing admin user secrets (same subdomain)</p>
+                    <p class="threat">Threat: Cross site scripting to steal archive logins<br>...across subdomains</p>
                     <ul>
-                        <li class="fragment"><i>http://example.com/<b>login</b></i> is the main institution login page</li>
-                        <li class="fragment"><i>http://<b>archive</b>.example.com/http://evil.com</i> is a web archive</li>
+                        <li class="fragment"><i>http://myarchive.com/<b>login</b></i> is the main institution login page</li>
+                        <li class="fragment"><i>http://<b>web</b>.myarchive.com/http://evil.com</i> is a web archive</li>
                         <li class="fragment">safe?</li>
                     </ul>
                     <p class="fragment concern">Still no ...</p>
                     <ul>
-						<li class="fragment">In <a href="https://stackoverflow.com/a/17371607/307769">IE10</a>, evil.com can steal login cookie</li>
+						<li class="fragment">In <a href="https://stackoverflow.com/a/17371607/307769">IE10</a>, evil.com might steal login cookie</li>
 						<li class="fragment">In <b>all</b> browsers, evil.com can wipe and replace cookies</li>
                     </ul>
                 </section>
@@ -252,25 +256,25 @@
 				<!-- CONTENT-BASED SHENANIGANS -->
 				
 				<section>
-                    <p class="threat">Threat: Content-based hijinks: Live web leakage</p>
+                    <p class="threat">Threat: Live web leakage on playback</p>
                     <ul>
-                        <li class="fragment">Accessing live web when page presented as archival undermines credibility</li>
-                        <li class="fragment">Malicious page can access live web to mislead, track users, load alternative content</li>
+                        <li class="fragment">Javascript can send messages to evil.com and fetch new content</li>
+                        <li class="fragment">... to mislead, track users, or rewrite history</li>
 						<li class="fragment">(<b>Bonus</b> for private archives -- any of your captures could export any of your other captures)</li>
                     </ul>
                     <p class="miti fragment">Mitigation: Content-Security-Policy header can limit access to web archive domain</p>
                 </section>
 				<section>
-                    <p class="threat">Threat: Content-based hijinks: Change contents for archived version</p>
+                    <p class="threat">Threat: Show different page contents when archived</p>
                     <ul>
-                        <li class="fragment">Pages can show different content in an archive</li>
+                        <li class="fragment">Pages can tell they're in an archive and act differently</li>
                     </ul>
                     <p class="miti fragment">Mitigation: Run archive in containerized/proxy mode browser</p>
                 </section>
 				<section>
-                    <p class="threat">Threat: Content-based hijinks: Fake banner data</p>
+                    <p class="threat">Threat: Fake banner data</p>
                     <ul>
-                        <li class="fragment">Pages can fake the archive's banner to pretend to be archived on a different date, or phish login credentials</li>
+                        <li class="fragment">Pages can fake the archive's banner</li>
                     </ul>
                     <p class="concern fragment">Mitigation (partial): iframe sandbox</p>
                     <p class="miti fragment">Mitigation (full): Run archive in containerized/proxy mode browser</p>
