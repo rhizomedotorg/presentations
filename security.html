@@ -178,8 +178,8 @@
                         </li>
                         <li class="fragment extra-pad">During capture and replay:
                             <ul>
-                            <li class="fragment"><i>https://webrecorder.io/<b>https://twitter.com/login</b></i></li>
-                            <li class="fragment"><i>https://webrecorder.io/<b>https://doubleclick.com/some-ad</b></i></li>
+                            <li class="fragment"><i>https://webrecorder.io/record/<b>https://twitter.com/login</b></i></li>
+                            <li class="fragment"><i>https://webrecorder.io/record/<b>https://doubleclick.com/some-ad</b></i></li>
                             </ul>
                         </li>
                         <li class="fragment">Standard cross-domain protections do not apply!</li>
@@ -190,7 +190,7 @@
                 </section>
                 <section>
                     <p class="threat">Threat: Stealing guided-capture secrets</p>
-                    <p class="miti fragment">(Partial) mitigation: Rewriting</p>
+                    <p class="concern fragment">(Partial) mitigation: Rewriting</p>
                     <ul>
                         <li class="fragment">Rewrite cookies to exact path only</li>
                         <li class="fragment">Rewrite javascript</li>
@@ -224,7 +224,7 @@
                     </ul>
                     <p class="fragment concern">No?</p>
                     <ul>
-						<li class="fragment">In some browsers, evil.com may still be able to steal login cookie</li>
+						<li class="fragment">In <a href="https://stackoverflow.com/a/17371607/307769">IE10</a>, evil.com can steal login cookie</li>
 						<li class="fragment">In <b>all</b> browsers, evil.com can wipe and replace cookies</li>
                     </ul>
                 </section>
@@ -274,7 +274,7 @@
                     <ul>
                         <li class="fragment">Pages can fake the archive's banner to pretend to be archived on a different date, or phish login credentials</li>
                     </ul>
-                    <p class="miti fragment">Mitigation (partial): iframe sandbox</p>
+                    <p class="concern fragment">Mitigation (partial): iframe sandbox</p>
                     <p class="miti fragment">Mitigation (full): Run archive in containerized/proxy mode browser</p>
                 </section>
 				
