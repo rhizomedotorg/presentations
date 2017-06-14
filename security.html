@@ -127,11 +127,10 @@
                     <h3>Possible security threats</h3>
                     <ul>
                         <li class="fragment">Stealing server secrets</li>
-                        <li class="fragment">Stealing guided-capture secrets</li>
+		                <li class="fragment">Stealing user secrets during capture</li>
                         <li class="fragment">Stealing admin user secrets</li>
                         <li class="fragment">Content-based hijinks</li>
                     </ul>
-					<p>[lifecycle image?]</p>
                 </section>
 
 				<!-- UNAUTHORIZED CAPTURE -->
@@ -139,7 +138,7 @@
                 <section>
                     <p class="threat">Threat: Stealing server secrets</p>
                     <ul>
-                        <li class="fragment">Capture system may have priveleged access to local network</li>
+                        <li class="fragment">Capture system may have privileged access to local network</li>
                         <li class="fragment">Possible to capture local private resources, into a public archive</li>
                         <li class="fragment">How does your archive handle these URLs?</li>
                             <ul>
@@ -155,9 +154,10 @@
                     </ul>
                 </section>
                 <section>
-                    <p class="threat">Threat: Stealing server secrets</p>
+                    <p class="threat">Threat: Stealing server secrets 2</p>
                     <ul>
                         <li class="fragment">Is the server-side capture browser up to date?</li>
+                        <li class="fragment">(maybe you're using PhantomJS for a good capture -- or Netscape Navigator)</li>
 					</ul>
                     <p class="miti fragment">Mitigation: Sandboxing</p>
                     <ul>
@@ -168,7 +168,7 @@
 				<!-- PASSWORD-PROTECTED CAPTURE -->
 					 
                 <section>
-                    <p class="threat">Threat: Stealing guided-capture secrets</p>
+                    <p class="threat">Threat: Stealing user secrets during capture</p>
                     <ul>
                         <li class="fragment">Normal web flow:</li>
                             <ul>
@@ -188,8 +188,8 @@
 	                    </ul>
                     </ul>
                 </section>
-                <section>
-                    <p class="threat">Threat: Stealing guided-capture secrets</p>
+                <section data-transition="none">
+                    <p class="threat">Threat: Stealing user secrets during capture</p>
                     <p class="concern fragment">(Partial) mitigation: Rewriting</p>
                     <ul>
                         <li class="fragment">Rewrite cookies to exact path only</li>
@@ -206,8 +206,8 @@
                 <section>
                     <p class="threat">Threat: Stealing admin user secrets (same domain)</p>
                     <ul>
-                        <li class="fragment"><i>http://example.com/login</i> is the main institution login page</li>
-                        <li class="fragment"><i>http://example.com/archive/http://evil.com</i> is a web archive</li>
+                        <li class="fragment"><i>http://example.com/<b>login</b></i> is the main institution login page</li>
+                        <li class="fragment"><i>http://example.com/<b>archive/http://evil.com</b></i> is a web archive</li>
                         <li class="fragment">safe?</li>
                     </ul>
                     <p class="fragment threat">No!</p>
@@ -218,11 +218,11 @@
                 <section>
                     <p class="threat">Threat: Stealing admin user secrets (same subdomain)</p>
                     <ul>
-                        <li class="fragment"><i>http://example.com/login</i> is the main institution login page</li>
-                        <li class="fragment"><i>http://archive.example.com/http://evil.com</i> is a web archive</li>
+                        <li class="fragment"><i>http://example.com/<b>login</b></i> is the main institution login page</li>
+                        <li class="fragment"><i>http://<b>archive</b>.example.com/http://evil.com</i> is a web archive</li>
                         <li class="fragment">safe?</li>
                     </ul>
-                    <p class="fragment concern">No?</p>
+                    <p class="fragment concern">Still no ...</p>
                     <ul>
 						<li class="fragment">In <a href="https://stackoverflow.com/a/17371607/307769">IE10</a>, evil.com can steal login cookie</li>
 						<li class="fragment">In <b>all</b> browsers, evil.com can wipe and replace cookies</li>
@@ -230,7 +230,6 @@
                 </section>
                 <section>
                     <p class="miti fragment">Mitigation: Run web archive on separate domain</p>
-                    <p class="miti fragment">Mitigation: Run archive in containerized/proxy mode browser</p>
                     <ul>
                         <li class="fragment">Use iframes for replay/capture of content</li>
                         <li class="fragment">Load web archive app from "app domain"</li>
@@ -257,20 +256,19 @@
                     <ul>
                         <li class="fragment">Accessing live web when page presented as archival undermines credibility</li>
                         <li class="fragment">Malicious page can access live web to mislead, track users, load alternative content</li>
-						<li class="fragment">(<b>Bonus</b> for private archives -- any of your captures could exfiltrate any of your other captures)</li>
+						<li class="fragment">(<b>Bonus</b> for private archives -- any of your captures could export any of your other captures)</li>
                     </ul>
                     <p class="miti fragment">Mitigation: Content-Security-Policy header can limit access to web archive domain</p>
-                    <p class="miti fragment">Mitigation: Run archive in containerized/proxy mode browser</p>
                 </section>
 				<section>
                     <p class="threat">Threat: Content-based hijinks: Change contents for archived version</p>
                     <ul>
-                        <li class="fragment">Pages can show subtly or openly different content if they figure out they are in an archive</li>
+                        <li class="fragment">Pages can show different content in an archive</li>
                     </ul>
                     <p class="miti fragment">Mitigation: Run archive in containerized/proxy mode browser</p>
                 </section>
 				<section>
-                    <p class="threat">Threat: Content-based hijinks: Fake header data</p>
+                    <p class="threat">Threat: Content-based hijinks: Fake banner data</p>
                     <ul>
                         <li class="fragment">Pages can fake the archive's banner to pretend to be archived on a different date, or phish login credentials</li>
                     </ul>
@@ -284,7 +282,7 @@
                     <ul>
                         <li class="fragment">Build tools for web archive security research</li>
                         <li class="fragment">Challenge researchers to find security issues</li>
-                        <li class="fragment"><h3>Introducing: <a href="https://github.com/jcushman/warcgames">Warcgames</a></h3></li>
+                        <li class="fragment"><h3>Introducing: <a href="http://warc.games">http://warc.games/</a></h3></li>
                     </ul>
                 </section>
                 <section>
