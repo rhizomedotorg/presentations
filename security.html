@@ -192,14 +192,14 @@
                     <ul>
                         <li class="fragment">Normal web flow:</li>
                             <ul>
-                            <li class="fragment"><i>https://twitter.com/login</i></li>
-                            <li class="fragment"><i>https://doubleclick.com/some-ad</i></li>
+                            <li class="fragment"><i class="url">https://twitter.com/login</i></li>
+                            <li class="fragment"><i class="url">https://doubleclick.com/some-ad</i></li>
                             </ul>
                         </li>
                         <li class="fragment extra-pad">During Webrecorder interactive capture:
                             <ul>
-                            <li class="fragment"><i>https://webrecorder.io/record/<b>https://twitter.com/login</b></i></li>
-                            <li class="fragment"><i>https://webrecorder.io/record/<b>https://doubleclick.com/evil-ad</b></i></li>
+                            <li class="fragment"><i class="url">https://webrecorder.io/record/<b>https://twitter.com/login</b></i></li>
+                            <li class="fragment"><i class="url">https://webrecorder.io/record/<b>https://doubleclick.com/evil-ad</b></i></li>
                             </ul>
                         </li>
                         <li class="fragment">Standard cross-domain protections do not apply!</li>
@@ -226,8 +226,8 @@
                 <section>
                     <p class="threat"><span class="caps-label">Threat:</span>Cross site scripting to steal archive logins</p>
                     <ul>
-                        <li class="fragment"><i>http://myarchive.com/<b>login</b></i> is the main institution login page</li>
-                        <li class="fragment"><i>http://myarchive.com/<b>web/http://evil.com</b></i> is a web archive</li>
+                        <li class="fragment"><i class="url">http://myarchive.com/<b>login</b></i> is the main institution login page</li>
+                        <li class="fragment"><i class="url">http://myarchive.com/<b>web/http://evil.com</b></i> is a web archive</li>
                         <li class="fragment">safe?</li>
                     </ul>
                     <p class="fragment threat">No!</p>
@@ -238,8 +238,8 @@
                 <section>
                     <p class="threat"><span class="caps-label">Threat:</span>Cross site scripting to steal archive logins<br>...across subdomains</p>
                     <ul>
-                        <li class="fragment"><i>http://myarchive.com/<b>login</b></i> is the main institution login page</li>
-                        <li class="fragment"><i>http://<b>web</b>.myarchive.com/http://evil.com</i> is a web archive</li>
+                        <li class="fragment"><i class="url">http://myarchive.com/<b>login</b></i> is the main institution login page</li>
+                        <li class="fragment"><i class="url">http://<b>web</b>.myarchive.com/http://evil.com</i> is a web archive</li>
                         <li class="fragment">safe?</li>
                     </ul>
                     <p class="fragment concern">Still no ...</p>
@@ -256,14 +256,14 @@
                         <li class="fragment">Load iframe content from "content domain"</li>
                         <li class="fragment extra-pad">Webrecorder example:
                             <ul>
-                            <li><i>https://webrecorder.io/</i> -- app domain</li>
-                            <li><i>https://wbrc.io/</i> -- content domain</li>
+                            <li><i class="url">https://webrecorder.io/</i> -- app domain</li>
+                            <li><i class="url">https://wbrc.io/</i> -- content domain</li>
                             </ul>
                         </li>
                         <li class="fragment extra-pad">Perma.cc example:
                             <ul>
-                            <li><i>https://perma.cc/</i> -- app domain</li>
-                            <li><i>https://perma-archives.org/</i> -- content domain</li>
+                            <li><i class="url">https://perma.cc/</i> -- app domain</li>
+                            <li><i class="url">https://perma-archives.org/</i> -- content domain</li>
                             </ul>
                         </li>
                     </ul>
