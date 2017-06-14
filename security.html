@@ -15,11 +15,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
         <link rel="stylesheet" href="css/reveal.css">
-        <link rel="stylesheet" href="css/theme/white.css" id="theme">
+        <link rel="stylesheet" href="css/theme/white_styled.css" id="theme">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 
         <!-- Code syntax highlighting -->
         <link rel="stylesheet" href="lib/css/zenburn.css">
 
+                <!-- CUSTOM STYLE -->
+                <link rel="stylesheet" href="css/theme/white_styled.css" id="theme">
+                <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
         <!-- Printing and PDF exports -->
         <script>
             var link = document.createElement( 'link' );
@@ -61,7 +65,8 @@
             .threat {
                 text-transform: uppercase;
                 text-align: left;
-                color: crimson;
+                font-style: italic !important;
+                color: crimson !important;
             }
             .concern {
                 text-transform: uppercase;
@@ -96,8 +101,8 @@
             <!-- Any section element inside of this container is displayed as a slide -->
             <div class="slides">
                 <section>
-                    <h4>Thinking like a hacker:</h4>
-                    <h3>Security considerations for<br/>High-Fidelity Web Archives</h3>
+                    <h4 style="padding-top: 12%; margin-bottom: 0.01rem">Thinking like a hacker<span style="margin-left:4px">:</span></h4>
+                    <h3>Security Considerations for<br/>High-Fidelity Web Archives</h3>
                     <p>Jack Cushman, Perma.cc</p>
                     <p>Ilya Kreymer, Webrecorder</p>
                 </section>
@@ -116,10 +121,10 @@
                         <li class="fragment"><b>Web archive replay can pose new security risks</b></li>
                     </ul>
                 </section>
-				
+
                 <section>
                     <h3>So our challenge:</h3>
-                    <h3 class="threat">What if example.com, but evil?</h3>
+                    <h3>What if example.com, <span class="threat">but evil?</span></h3>
 					<p>[macro image?]</p>
                 </section>
 
@@ -164,9 +169,9 @@
                         <li class="fragment">Run capture system in isolated virtual machine</li>
                     </ul>
                 </section>
-                     
+
 				<!-- PASSWORD-PROTECTED CAPTURE -->
-					 
+
                 <section>
                     <p class="threat">Threat: Stealing guided-capture secrets</p>
                     <ul>
@@ -200,9 +205,9 @@
                         <li class="fragment">Run capture in containerized/proxy mode browser</li>
                     </ul>
                 </section>
-				
+
 				<!-- HOSTING REPLAYS AND LOGINS ON SAME SITE -->
-				
+
                 <section>
                     <p class="threat">Threat: Stealing admin user secrets (same domain)</p>
                     <ul>
@@ -249,9 +254,9 @@
                         </li>
                     </ul>
                 </section>
-				
+
 				<!-- CONTENT-BASED SHENANIGANS -->
-				
+
 				<section>
                     <p class="threat">Threat: Content-based hijinks: Live web leakage</p>
                     <ul>
@@ -277,8 +282,8 @@
                     <p class="concern fragment">Mitigation (partial): iframe sandbox</p>
                     <p class="miti fragment">Mitigation (full): Run archive in containerized/proxy mode browser</p>
                 </section>
-				
-				
+
+
                 <section>
                     <h2>What's next?</h2>
                     <ul>
