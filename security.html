@@ -103,6 +103,11 @@
                 </section>
 
                 <section>
+                    <h3>Why "think like a hacker?"</h3>
+					<p>[hacker image]</p>
+                </section>
+
+                <section>
                     <h3>Why is security a concern?</h3>
                     <ul>
                         <li class="fragment strike">Web Archives just collection of old pages</li>
@@ -111,113 +116,121 @@
                         <li class="fragment"><b>Web archive replay can pose new security risks</b></li>
                     </ul>
                 </section>
+				
+                <section>
+                    <h3>So our challenge:</h3>
+                    <h3 class="threat">What if example.com, but evil?</h3>
+					<p>[macro image?]</p>
+                </section>
 
                 <section>
                     <h3>Possible security threats</h3>
                     <ul>
-                        <li class="fragment">Unauthorized capture</li>
-                        <li class="fragment">Manipulating capture or replay</li>
-                        <li class="fragment">Threats to users data</li>
-                        <li class="fragment">Threats to credibility of a web archive</li>
+                        <li class="fragment">Stealing server secrets</li>
+                        <li class="fragment">Stealing guided-capture secrets</li>
+                        <li class="fragment">Stealing admin user secrets</li>
+                        <li class="fragment">Content-based hijinks</li>
                     </ul>
+					<p>[lifecycle image?]</p>
                 </section>
 
+				<!-- UNAUTHORIZED CAPTURE -->
+
                 <section>
-                    <p class="threat">Threat: Unauthorized capture</p>
+                    <p class="threat">Threat: Stealing server secrets</p>
                     <ul>
                         <li class="fragment">Capture system may have priveleged access to local network</li>
                         <li class="fragment">Possible to capture local private resources, into a public archive</li>
+                        <li class="fragment">How does your archive handle these URLs?</li>
+                            <ul>
+                            <li>Local services: <i>http://127.0.0.1:8000/</i></li>
+                            <li>Network scanning: <i>http://192.168.1.100/</i></li>
+                            <li>File access: <i>file:///etc/passwd</i></li>
+                            </ul>
                     </ul>
                     <p class="miti fragment">Mitigation: Network Filtering</p>
                     <ul>
                         <li class="fragment">Don't allow capture of local ip ranges</li>
-                        <li class="fragment">Run capture system in isolated sandbox</li>
+                        <li class="fragment">Restrict to http(s) protocol</li>
+                    </ul>
+                </section>
+                <section>
+                    <p class="threat">Threat: Stealing server secrets</p>
+                    <ul>
+                        <li class="fragment">Is the server-side capture browser up to date?</li>
+					</ul>
+                    <p class="miti fragment">Mitigation: Sandboxing</p>
+                    <ul>
+                        <li class="fragment">Run capture system in isolated virtual machine</li>
                     </ul>
                 </section>
                      
+				<!-- PASSWORD-PROTECTED CAPTURE -->
+					 
                 <section>
-                    <p class="concern">Concern: URL rewriting</p>
+                    <p class="threat">Threat: Stealing guided-capture secrets</p>
                     <ul>
-                        <li class="fragment">Untrusted content accessed from web archive domain</li>
-                        <li class="fragment extra-pad">Separate domains:
+                        <li class="fragment">Normal web flow:</li>
                             <ul>
-                            <li><i>http://example-domain-A.com/</i></li>
-                            <li><i>http://example-domain-B.com/</i></li>
+                            <li><i>https://twitter.com/login</i></li>
+                            <li><i>https://doubleclick.com/some-ad</i></li>
                             </ul>
                         </li>
-                        <li class="fragment extra-pad">Rewritten replay, same domain:
+                        <li class="fragment extra-pad">During capture and replay:
                             <ul>
-                            <li><i>http://example.com/http://example-domain-A.com/</i></li>
-                            <li><i>http://example.com/http://example-domain-B.com/</i></li>
+                            <li><i>https://webrecorder.io/<b>https://twitter.com/login</b></i></li>
+                            <li><i>https://webrecorder.io/<b>https://doubleclick.com/some-ad</b></i></li>
                             </ul>
                         </li>
                         <li class="fragment">Standard cross-domain protections do not apply!</li>
+	                    <ul>
+	                        <li class="fragment">Defeats XSS and CSRF protection</li>
+	                    </ul>
                     </ul>
                 </section>
                 <section>
-                    <p class="threat">Threat: Cross-Domain Cookie Access</p>
-                    <ul>
-                        <li class="fragment">Cookies of rewritten page may be accessible to other rewritten pages</li>
-                    </ul>
-                    <p class="miti fragment">Mitigation: Rewriting</p>
+                    <p class="threat">Threat: Stealing guided-capture secrets</p>
+                    <p class="miti fragment">(Partial) mitigation: Rewriting</p>
                     <ul>
                         <li class="fragment">Rewrite cookies to exact path only</li>
+                        <li class="fragment">Rewrite javascript</li>
                     </ul>
-                    <p class="concern fragment">Concern: Domain Cookies</p>
+                    <p class="miti fragment">(Full) mitigation: Remote browser</p>
                     <ul>
-                        <li class="fragment">Domain wildcard *.example.com cookies</li>
-                        <li class="fragment">Client-created cookies</li>
+                        <li class="fragment">Run capture in containerized/proxy mode browser</li>
+                    </ul>
+                </section>
+				
+				<!-- HOSTING REPLAYS AND LOGINS ON SAME SITE -->
+				
+                <section>
+                    <p class="threat">Threat: Stealing admin user secrets (same domain)</p>
+                    <ul>
+                        <li class="fragment"><i>http://example.com/login</i> is the main institution login page</li>
+                        <li class="fragment"><i>http://example.com/archive/http://evil.com</i> is a web archive</li>
+                        <li class="fragment">safe?</li>
+                    </ul>
+                    <p class="fragment threat">No!</p>
+                    <ul>
+                        <li class="fragment">Cross-site scripting (XSS): an admin who visits <i>http://example.com/archive/http://evil.com</i> has their account taken over</li>
                     </ul>
                 </section>
                 <section>
-                    <p class="threat">Threat: Local Storage Access</p>
+                    <p class="threat">Threat: Stealing admin user secrets (same subdomain)</p>
                     <ul>
-                        <li class="fragment">All local/session storage bucketed by host</li>
-                        <li class="fragment">Different sites can access, collide on storage keys</li>
+                        <li class="fragment"><i>http://example.com/login</i> is the main institution login page</li>
+                        <li class="fragment"><i>http://archive.example.com/http://evil.com</i> is a web archive</li>
+                        <li class="fragment">safe?</li>
                     </ul>
-                    <p class="miti fragment">Mitigation: Additional Bucketing</p>
+                    <p class="fragment concern">No?</p>
                     <ul>
-                        <li class="fragment">Add host to storage key to bucket by host</li>
-                    </ul>
-                    <p class="concern fragment">Concern: Storage Overflow</p>
-                    <ul>
-                        <li class="fragment">Space for local/session storage is limited, per host.</li>
-                        <li class="fragment">One site may use up all the storage space still</li>
+						<li class="fragment">In some browsers, evil.com may still be able to steal login cookie</li>
+						<li class="fragment">In <b>all</b> browsers, evil.com can wipe cookies for example.com and replace, unexpdectedly logging in admin as attacker</li>
                     </ul>
                 </section>
                 <section>
-                    <p class="threat">Threat: Cookie Overflow</p>
-                    <ul>
-                        <li class="fragment">One page can wipe all cookies on a domain</li>
-                        <li class="fragment">Keep setting new cookies via <code>document.cookie</code> until old ones are dropped.</li>
-                    </ul>
-                    <p class="threat fragment">No Mitigation</p>
-                    <ul>
-                        <li class="fragment">Not possible to prevent cookie overflow!</li>
-                    </ul>
-                </section>
-                <section>
-                    <p class="concern">Concern: web archive running on subdomain</p>
-                    <ul>
-                        <li class="fragment"><i>http://example.com/</i> is the main institution home page</li>
-                        <li class="fragment"><i>http://archive.example.com/</i> is a web archive</li>
-                        <li class="fragment">An archived page could pose a threat to the parent domain</li>
-                        <li class="fragment"><i>document.domain</i> can be set to parent domain</li>
-                    </ul>
-                </section>
-                <section>
-                    <p class="threat">Threat: Session hijacking/manipulation</p>
-                    <ul>
-                        <li class="fragment"><b>http://archive.example.com/replay/evil.html</b> changes origin to parent domain</li>
-                        <li class="fragment">Archived page can now access <b>http://example.com/</b></li>
-                        <li class="fragment">If user logged in, evil archived page can act as logged in user to <b>http://example.com/</b></li>
-                        <li class="fragment">Can manipulate session, overflow cookies, etc...</li>
-                    </ul>
                     <p class="miti fragment">Mitigation: Run web archive on separate domain</p>
                     <p class="miti fragment">Mitigation: Run archive in containerized/proxy mode browser</p>
-                </section>
-                <section>
-                    <p class="miti">Recommendation: Keep Web Archive Content Isolated</p>
                     <ul>
                         <li class="fragment">Use iframes for replay/capture of content</li>
                         <li class="fragment">Load web archive app from "app domain"</li>
@@ -236,34 +249,40 @@
                         </li>
                     </ul>
                 </section>
-                <section>
-                    <p class="threat">Threat: Live Web Leakage</p>
+				
+				<!-- CONTENT-BASED SHENANIGANS -->
+				
+				<section>
+                    <p class="threat">Threat: Content-based hijinks: Live web leakage</p>
                     <ul>
                         <li class="fragment">Accessing live web when page presented as archival undermines credibility</li>
-                        <li class="fragment">Malicious page can access live web to mislead, load alternative content</li>
+                        <li class="fragment">Malicious page can access live web to mislead, track users, load alternative content</li>
                     </ul>
                     <p class="miti fragment">Mitigation: Content-Security-Policy header can limit access to web archive domain</p>
                     <p class="miti fragment">Mitigation: Run archive in containerized/proxy mode browser</p>
                 </section>
-                <section>
-                    <p class="threat">Threat: Anti-archiving anti-rewriting measures</p>
+				<section>
+                    <p class="threat">Threat: Content-based hijinks: Change contents for archived version</p>
                     <ul>
-                        <li class="fragment">URL rewriting replay is sophisticated but not foolproof</li>
-                        <li class="fragment">Determined advesary could detect if page is running in url rewriting mode</li>
-                        <li class="fragment">Impossible to detect every challenge</li>
+                        <li class="fragment">Pages can show subtly or openly different content if they figure out they are in an archive</li>
                     </ul>
-                    <p class="miti fragment">Mitigation: Don't use rewriting mode for capture/replay</p>
-                    <ul>
-                        <li class="fragment">Use containerized/proxy mode browser for capture/replay</li>
-                    </ul>
+                    <p class="miti fragment">Mitigation: Run archive in containerized/proxy mode browser</p>
                 </section>
-                 <section>
+				<section>
+                    <p class="threat">Threat: Content-based hijinks: Fake header data</p>
+                    <ul>
+                        <li class="fragment">Pages can fake the archive's header style to pretend to be archived on a different date, or phish login credentials</li>
+                    </ul>
+                    <p class="miti fragment">Mitigation (partial): iframe sandbox</p>
+                    <p class="miti fragment">Mitigation (full): Run archive in containerized/proxy mode browser</p>
+                </section>
+				
+				
+                <section>
                     <h2>What's next?</h2>
                     <ul>
-                        <li class="fragment">An overview of known threats and mitigations</li>
-                        <li class="fragment">What challenges remain?</li>
-                        <li class="fragment">Need tools for web archive security research</li>
-                        <li class="fragment">Challenges researchers to find security issues with web archive deployment</li>
+                        <li class="fragment">Build tools for web archive security research</li>
+                        <li class="fragment">Challenge researchers to find security issues</li>
                         <li class="fragment"><h3>Introducing: <a href="https://github.com/jcushman/warcgames">Warcgames</a></h3></li>
                     </ul>
                 </section>
@@ -278,13 +297,13 @@
     <!-- Footer -->
     <div style="position:absolute; bottom:1%; left:2%; width:100%; vertical-align: middle">
         <a href="https://webrecorder.io/"><img style="vertical-align: middle; width: 48px; height: 48px" src="img/wr-logo.png">
-        <img style="vertical-align: middle" width="18%" src="img/wr-text.png"></a>
+        <img style="vertical-align: middle" style="width:18%" src="img/wr-text.png"></a>
         <!--<span class="footer-links">
             <a href="https://webrecorder.io/" target="_blank">webrecorder.io</a><br/>
             <a href="http://rhizome.org/" target="_blank">rhizome.org</a>
         </span>-->
-        <a href="https://perma.cc/"><img style="vertical-align: middle" src="img/perma_logo.png"/></a>
-        <p class="footer-text">Web Archive Security</p>
+        <a href="https://perma.cc/"><img style="vertical-align: middle; width:18%" src="img/perma_logo.png"/></a>
+        <!--<p class="footer-text">Web Archive Security</p>-->
         <!--<span class="footer-links">
             <a href="https://perma.cc/" target="_blank">Perma.cc</a>
         </span>-->
