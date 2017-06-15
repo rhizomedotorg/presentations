@@ -135,8 +135,7 @@
 
                 <section>
                     <h3>So our challenge:</h3>
-                    <h3>What if example.com, <span style="color: crimson; font-style: italic; font-weight: 500; text-transform: uppercase">but evil?</span></h3>
-					<p>[macro image?]</p>
+					<p><img src="img/dinosaur.jpg" style="width: 50%"></p>
                 </section>
 
                 <section>
@@ -148,7 +147,7 @@
 						<li>Cross site scripting to steal archive logins</li>
 						<li>Live web leakage on playback</li>
 						<li>Show different page contents when archived</li>
-						<li>Fake banner data</li>
+						<li>Banner spoofing</li>
                     </ol>
                 </section>
 
@@ -212,7 +211,7 @@
                         <li class="fragment">Rewrite cookies to exact path only</li>
                         <li class="fragment">Rewrite JS to intercept cookie access</li>
                     </ul>
-                    <p class="miti fragment"><span class="caps-label">Mitigation:</span> Separate Recording Sessions</p>
+                    <p class="concern fragment"><span class="caps-label">Mitigation:</span> Separate Recording Sessions</p>
                     <ul>
                         <li class="fragment">For Webrecorder, use separate recording sessions when recording credentialed content</li>
                     </ul>
@@ -289,9 +288,9 @@
                     <p class="miti fragment"><span class="caps-label">Mitigation:</span> Run archive in containerized/proxy mode browser</p>
                 </section>
 				<section>
-                    <p class="threat"><span class="caps-label">Threat:</span>Fake banner data</p>
+                    <p class="threat"><span class="caps-label">Threat:</span>Banner spoofing</p>
                     <ul>
-                        <li class="fragment">Pages can fake the archive's banner</li>
+                        <li class="fragment">Pages can dynamically edit the archive's banner</li>
                     </ul>
                     <p class="miti fragment"><span class="caps-label">Mitigation:</span>Use iframes for replay</p>
                     <ul>
@@ -301,6 +300,7 @@
                         <li class="fragment">Use iframe sandbox (more restrictive)</li>
                     </ul>
                     <p class="miti fragment"><span class="caps-label">Mitigation:</span> Run archive in containerized/proxy mode browser</p>
+                    <p class="miti fragment"><span class="caps-label">Mitigation:</span> Display rendered DOM and strip javascript (archive.is)</p>
                 </section>
 
 
