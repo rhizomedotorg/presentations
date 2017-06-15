@@ -85,14 +85,17 @@
               margin-bottom: -0.4em!important;
             }
             .url {
-              font-family: courier, monospace;
+              font-family: courier, monospace !important;
               font-size: 90%;
               color: darkBlue;
             }
             .extra-pad {
                 margin-bottom: 30px !important;
             }
-            .footer-text {
+            .extra-extra-pad {
+                margin-bottom: 60px !important;
+            }
+             .footer-text {
                 font-size: 28px;
                 margin-left: 50px;
                 font-family: sans-serif;
@@ -119,17 +122,14 @@
                 </section>
 
                 <section>
-                    <h3>Why "think like a hacker?"</h3>
-					<p>[hacker image]</p>
-                </section>
-
-                <section>
                     <h3>Why is security a concern?</h3>
                     <ul>
                         <li class="fragment strike">Web Archives just collection of old pages</li>
-                        <li class="fragment extra-pad"><b>High-Fidelity web archives run untrusted web software</b></li>
+                        <li class="fragment extra-extra-pad"><b>High-Fidelity web archives run untrusted web software</b></li>
                         <li class="fragment strike">Live site is "safe", so nothing to worry about</li>
-                        <li class="fragment"><b>Web archive replay can pose new security risks</b></li>
+                        <li class="fragment extra-extra-pad"><b>Web archive replay can pose new security risks</b></li>
+                        <li class="fragment strike">It's loading from an archive, so that's what the page looked like</li>
+                        <li class="fragment"><b>Replay issues side, page loaded from an archive could intentionally deceive</b></li>
                     </ul>
                 </section>
 
@@ -165,7 +165,7 @@
                             </ul>
                          <li class="fragment">Could capture private resources, into a public archive</li>
                    </ul>
-                    <p class="miti fragment"><span class="caps-label"><span class="caps-label">Mitigation:</span></span>Network Filtering + Sandboxing</p>
+                    <p class="miti fragment"><span class="caps-label">Mitigation:</span>Network Filtering + Sandboxing</p>
                     <ul>
                         <li class="fragment">Don't allow capture of local ip ranges</li>
                         <li class="fragment">Restrict to http(s) protocol</li>
@@ -193,7 +193,7 @@
                         <li class="fragment">Normal web flow:</li>
                             <ul>
                             <li class="fragment"><i class="url">https://twitter.com/login</i></li>
-                            <li class="fragment"><i class="url">https://doubleclick.com/some-ad</i></li>
+                            <li class="fragment"><i class="url">https://doubleclick.com/evil-ad</i></li>
                             </ul>
                         </li>
                         <li class="fragment extra-pad">During Webrecorder interactive capture:
@@ -203,9 +203,6 @@
                             </ul>
                         </li>
                         <li class="fragment">Standard cross-domain protections do not apply!</li>
-	                    <ul>
-	                        <li class="fragment">Defeats XSS and CSRF protection</li>
-	                    </ul>
                     </ul>
                 </section>
                 <section data-transition="none">
@@ -213,11 +210,15 @@
                     <p class="concern fragment"><span class="caps-label">Partial Mitigation:</span> Rewriting</p>
                     <ul>
                         <li class="fragment">Rewrite cookies to exact path only</li>
-                        <li class="fragment">Rewrite javascript</li>
+                        <li class="fragment">Rewrite JS to intercept cookie access</li>
+                    </ul>
+                    <p class="miti fragment"><span class="caps-label">Mitigation:</span> Separate Recording Sessions</p>
+                    <ul>
+                        <li class="fragment">For Webrecorder, use separate recording sessions when recording credentialed content</li>
                     </ul>
                     <p class="miti fragment"><span class="caps-label">Mitigation:</span> Remote browser</p>
                     <ul>
-                        <li class="fragment">Run capture in containerized/proxy mode browser</li>
+                        <li class="fragment">Record in containerized/proxy mode browser</li>
                     </ul>
                 </section>
 
@@ -232,7 +233,7 @@
                     </ul>
                     <p class="fragment threat">No!</p>
                     <ul>
-                        <li class="fragment">Cross-site scripting (XSS): an admin who visits <i>http://example.com/archive/http://evil.com</i> has their account taken over</li>
+                        <li class="fragment">Cross-site scripting (XSS): an admin who visits <i class="url">http://myarchive.com/web/http://evil.com</i> has their account taken over</li>
                     </ul>
                 </section>
                 <section>
@@ -249,11 +250,11 @@
                     </ul>
                 </section>
                 <section>
-                    <p class="miti fragment"><span class="caps-label">Mitigation:</span> Run web archive on separate domain</p>
+                    <p class="miti"><span class="caps-label">Mitigation:</span> Run web archive on separate domain</p>
                     <ul>
-                        <li class="fragment">Use iframes for replay/capture of content</li>
-                        <li class="fragment">Load web archive app from "app domain"</li>
-                        <li class="fragment">Load iframe content from "content domain"</li>
+                        <li class="fragment">Use iframes to isolate web archive content</li>
+                        <li class="fragment">Load web archive app from <i>app domain</i></li>
+                        <li class="fragment">Load iframe content from <i>content domain</i></li>
                         <li class="fragment extra-pad">Webrecorder example:
                             <ul>
                             <li><i class="url">https://webrecorder.io/</i> -- app domain</li>
@@ -278,7 +279,7 @@
                         <li class="fragment">... to mislead, track users, or rewrite history</li>
 						<li class="fragment">(<b>Bonus</b> for private archives -- any of your captures could export any of your other captures)</li>
                     </ul>
-                    <p class="miti fragment"><span class="caps-label">Mitigation:</span> Content-Security-Policy header can limit access to web archive domain</p>
+                    <p class="miti fragment"><span class="caps-label">Mitigation:</span>Content-Security-Policy header can limit access to web archive domain</p>
                 </section>
 				<section>
                     <p class="threat"><span class="caps-label">Threat:</span>Show different page contents when archived</p>
@@ -292,8 +293,14 @@
                     <ul>
                         <li class="fragment">Pages can fake the archive's banner</li>
                     </ul>
-                    <p class="concern fragment"><span class="caps-label">Mitigation (partial):</span> iframe sandbox</p>
-                    <p class="miti fragment"><span class="caps-label">Mitigation (full):</span> Run archive in containerized/proxy mode browser</p>
+                    <p class="miti fragment"><span class="caps-label">Mitigation:</span>Use iframes for replay</p>
+                    <ul>
+                        <li class="fragment">Don't inject banner into replay frame</li>
+                        <li class="fragment">Use <span class="url">X-Frame-Options</span> header to limit embedding</li>
+                        <li class="fragment">Serve from separate content domain</li>
+                        <li class="fragment">Use iframe sandbox (more restrictive)</li>
+                    </ul>
+                    <p class="miti fragment"><span class="caps-label">Mitigation:</span> Run archive in containerized/proxy mode browser</p>
                 </section>
 
 
