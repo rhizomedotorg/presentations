@@ -120,14 +120,14 @@
             <section>
                 <h3>What is pywb?</h3>
                 <ul>
-                    <li class="fragment">A suite of web archiving tools, 2.1 release couple of weeks ago</li>
-                    <li class="fragment">Originally designed as a new wayback machine</li>
-                    <li class="fragment">Includes High Fidelity Replay</li>
-                    <li class="fragment">and High Fidelity Capture! (Record Mode)</li>
                     <li class="fragment">Core "engine" powering Webrecorder</li>
+                    <li class="fragment">Fully <a href="https://github.com/webrecorder/pywb">open source suite of web archiving tools</a></li>
+                    <li class="fragment">Originally designed as a new wayback machine, now on 2.1 release</li>
+                    <li class="fragment">Includes High Fidelity Replay</li>
+                    <li class="fragment">and High Fidelity Capture (Record Mode)</li>
                     <li class="fragment">Two developers at Rhizome, ~20 contributors over the years</li>
-                    <li class="fragment">Fully open-source and customizable</li>
                     <li class="fragment">Docs: <a href="https://pywb.readthedocs.io">pywb.readthedocs.io</a></li>
+                    <li class="fragment">Code: <a href="https://github.com/webrecorder/pywb">github.com/webrecorder/pywb</a></li>
                 </ul>
             </section>
             <section>
@@ -152,9 +152,9 @@
                 <ul>
                     <li class="fragment">Capture pages using a web browser...</li>
                     <li class="fragment">...and Capture the browser!</li>
-                    <li class="fragment">Rewrite Urls and Tinker with JS Environment</li>
+                    <li class="fragment">Rewrite Urls and Sandbox Javascript Environment</li>
                     <li class="fragment">Fuzzy Match Url Lookup</li>
-                    <li class="fragment">Adapt to Adaptive Streaming and Rendering</li>
+                    <li class="fragment">Adapt to Adaptive Rendering and Streaming</li>
                     <li class="fragment">Preserve dynamic history changes</li>
                 </ul>
             </section>
@@ -167,7 +167,7 @@
                 <h4 class="fragment left pad-top">Capture the browser itself and run in containers and emulators<br/>(ex: <a href="http://oldweb.today">oldweb.today</a>)</h4>
             </section>
             <section>
-                <h3>Url Rewriting and JS Tinkering</h3>
+                <h3>Url Rewriting and JS Sandboxing</h3>
                 <section>
                     <p class="fragment">Traditional url rewriting:</p>
                     <p class="fragment">http://example.com/ -> http://myarchive.institution.org/replay/http://example.com</p>
@@ -175,9 +175,9 @@
                     <p class="fragment">But Javascript expects original url <i>http://example.com/</i> !</p>
                 </section>
                 <section>
-                    <p class="fragment">"Trick" the browser or simulate the original JS environment</p>
+                    <p class="fragment">"Trick" the browser or "sandbox" the original JS environment</p>
                     <ul>
-                        <li class="fragment">Override many system JS functions</li>
+                        <li class="fragment">Override many system JS functions to custom versions which:</li>
                         <li class="fragment"><i>Unrewrite</i> urls before passing them to user-defined functions</li>
                         <li class="fragment"><i>Rewrite</i> urls before passing to any network-related function</li>
                     </ul>
@@ -198,11 +198,11 @@
                     </ul>
                 </section>
                 <section>
-                    <p class="fragment">But some JS objects can't be overriden at all!</p>
+                    <p class="fragment">But some Javascript objects can't be overriden at all!</p>
                     <p class="fragment">Ex: <code>window</code>, <code>location</code>, <code>top</code></p>
                     <p class="fragment">Fortunately, they can be "masked" by replacing:</p>
                     <pre class="left fragment">
-                        location.href = "http://example.com/"
+location.href = "http://example.com/"
                     </pre>
                     <p class="fragment">With:</p>
                     <pre class="left fragment">
@@ -225,11 +225,12 @@
             </section>
             <section>
                 <h3>Fuzzy Match Url Lookup</h3>
-                <p>Only match significant query parameters, ignore dynamic, non-deterministic ones</p>
+                <p>Only match "significant" portion of URL, ignore remainder</p>
                 <section>
-                    <p class="fragment"><span class="left">Captured:&nbsp;</span>http://example.com/some/path?_=12345</p>
-                    <p class="fragment"><span class="left">Replayed:&nbsp;</span>http://example.com/some/path?_=1234<span class="redh">6</span></p>
-                    <p class="fragment">Need to fuzzy match, ignore the _= query param!</p>
+                    <p class="fragment"><span class="left">Captured:&nbsp;</span>http://example.com/some/path?<span class="redh">_=12345</span></p>
+                    <p class="fragment"><span class="left">Replayed:&nbsp;</span>http://example.com/some/path?<span class="redh">_=67890</span></p>
+                    <p class="fragment">Need to fuzzy match, ignore the <span class="redh">_=</span>&nbsp;(a timestamp param)</p>
+                    <p class="fragment">How do we know what query params to ignore?</p>
                 </section>
                 <section>
                     <p class="fragment"><span class="left">Captured:&nbsp;</span>http://example.com/some/path?<span class="greenh">id=ABC</span>&amp;__otherparam=abc&amp;other=test</p>
@@ -240,9 +241,9 @@
             </section>
             <section>
                 <h3>Adaptive Rendering (Static)</h3>
-                <p>Non-deterministic - browser loads only one of many options based on screen dimensions</p>
+                <p>Browsers can load different resources based on screen size, pixel density, window size, and general device capabilities</p>
                 <section>
-                    <p>HTML and CSS can be added dynamcially by Javascript</p>
+                    <p class="fragment">HTML and CSS can be added dynamcially by Javascript</p>
                 </section>
                 <section>
                     <p>CSS @media queries</p>
@@ -273,9 +274,9 @@ image-4x.png 4x"&gt;
                     </pre>
                 </section>
                 <section>
-                    <p>Solution: <i>Try to load all options dynamically</i></p>
-                    <p>pywb (and Webrecorder) has a new 'Auto Fetch' system for loading all resolutions in the background during capture</p>
-                    <p class="fragment"><a href="https://blog.webrecorder.io/2018/11/09/preserving-media-queries-for-pixel-perfect-preservation.html">Blog Post by John Berlin</a></p>
+                    <p class="fragment">Solution: <i>Try to load all options dynamically</i></p>
+                    <p class="fragment">pywb 2.1 (and Webrecorder) have a new 'Auto Fetch' system for capturing all versions of a resource automatically during browser-based capture.</p>
+                    <p class="fragment">More details in an upcoming blog post<br/> by John Berlin, our Senior Backend Developer</p>
                 </section>
             </section>
             <section>
@@ -299,12 +300,13 @@ image-4x.png 4x"&gt;
                     </ol>
                 </section>
                 <section>
-                    <p>DASH / HLS manifest rewriting</p>
+                    <p>DASH / HLS manifest Rewriting</p>
                     <ul>
                         <li class="fragment">For each video chunk, pick only one resolution (not necessarily highest)</li>
                         <li class="fragment">Store choice in WARC as extra WARC header</li>
                         <li class="fragment">Use same rewriting for capture and replay</li>
                         <li class="fragment">One resolution only == deterministic behavior!</li>
+                        <li class="fragment">Allows capture and replay of streaming media</li>
                     </ul>
                 </section>
             </section>
@@ -314,21 +316,29 @@ image-4x.png 4x"&gt;
                 </p>
                 <ul>
                     <li class="fragment">Page can change URL to any other on same domain</li>
-                    <li class="fragment">Designed for optimizing page loads</li>
-                    <li class="fragment">A URL seen by user does not mean a URL was loaded from server!</li>
+                    <li class="fragment">A URL show in browser does not mean a URL was loaded over HTTP</li>
                     <li class="fragment">No way to save in WARC (yet)</li>
                 </ul>
-                <p class="fragment">Possible solution: <i>Store history changes in WARC?</i></p>
+                <div class="fragment">Possible solution: <i>Store history changes in WARC?</i>
+                <p class="pad-top">(More info at WARC File Format workshop)</p></div>
             </section>
             <section>
-                <h3>Final Thoughts</h3>
-                <p class="fragment">Many tricks needed to reproduce a modern web page at <i>high-fidelity</i></p>
-                <p class="fragment">What is an "original" site if web is/becoming more non-deterministic</p>
-                <p class="fragment">pywb solves some of these problems, but many more remain.</p>
+                <h3>Conclusions</h3>
+                <p class="fragment">Many "tricks" needed to reproduce a modern web page at <i>high-fidelity</i></p>
+                <p class="fragment">pywb solves some of these problems,<br/>but many more remain.</p>
                 <p class="fragment">We need your help in working on these difficult issues!</p>
             </section>
+
             <section>
-                <h2>Addendum: Webrecorder Automation Demo!</h2>
+                <h3>Next Steps</h3>
+                <p class="fragment">Continuous work on fidelity improvements to maintain <i>high-fidelity</i></p>
+                <p class="fragment">Automation of high fidelity web archiving!</p>
+                <p class="fragment">Explore overlap between software preservation and web archives.</p>
+                <p class="fragment left">Prototype combining web archives + browsers + sofware preservation: <br/>See: <a href="https://scalar.webrecorder.net">scalar.webrecorder.net</a>
+                </p>
+            </section>
+            <section>
+                <h2 style="margin-top: 100px">Webrecorder Automation Demo!</h2>
             </section>
             <section>
                 <h2>Thank you</h2>
