@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>IIPC - WARC Proposals 2018</title>
+
+        <meta name="description" content="IIPC - WARC Proposals 2018">
+        <meta name="author" content="Ilya Kreymer">
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/white_styled.css" id="theme">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+        <!-- Code syntax highlighting -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+                <!-- CUSTOM STYLE -->
+                <link rel="stylesheet" href="css/theme/white_styled.css" id="theme">
+                <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+
+        <style>
+            ul {
+                text-align: left !important;
+                display: block !important;
+            }
+            .clear-both {
+                clear: both;
+            }
+            .footer-links {
+                display: inline-block;
+                margin-left: 20px;
+                vertical-align: middle;
+                line-height: 1.5em;
+                font-family: sans-serif;
+                font-weight: bold;
+            }
+            .reveal pre {
+                line-height: 0.9em;
+                box-shadow: none;
+            }
+            .redh {
+                /*text-transform: uppercase;*/
+                text-align: left;
+                color: crimson !important;
+            }
+            .left {
+                text-align: left;
+                font-size: 80% !important;
+            }
+            .url {
+              font-family: courier, monospace !important;
+              font-size: 90%;
+            }
+            .pad-top {
+                margin-top: 60px !important;
+            }
+            .footer-text {
+                font-size: 28px;
+                margin-left: 50px;
+                font-family: sans-serif;
+                display: inline;
+            }
+        </style>
+
+        <!--[if lt IE 9]>
+<script src="lib/js/html5shiv.js"></script>
+<![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <h3>WARC Provenance Headers Guidance</h3>
+                    <section>
+                        <ul>
+                            <li>Designed to support creation of WARCs from existing archives, other WARCs, or files on disk</li>
+                            <li>Add two new headers <code>WARC-Source-URI</code> and <code>WARC-Creation-Date</code></li>
+                            <li><code>WARC-Source-URI</code> indicates the source that a url was retrieved from.<br/>If omitted, assume
+                                to be <code>WARC-Target-URI</code></li>
+                            <li><code>WARC-Creation-Date</code> indicates the datetime that the WARC was created, if different then the datetime of the resource
+                                <br/>If omitted, assume to be <code>WARC-Date</code></li>
+                            <li>Interaction with Memento headers if a resource with Memento is written to a WARC:
+                                <ul>
+                                    <li>The <code>Memento-Datetime</code> should be the <code>WARC-Date</code></li>
+                                    <li>The URI-R should be the <code>WARC-Target-URI</code></li>
+                                    <li>The URI-M should be the <code>WARC-Source-URI</code></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                    <p>Example 1: Remote url extraction: Webrecorder Extraction/Patching from Remote Archive</p>
+<pre>
+WARC/1.0
+WARC-Type: response
+...
+WARC-Date: 1996-12-26T18:25:58Z
+<b>WARC-Creation-Date: 2018-11-13T11:19:07Z</b>
+WARC-Target-URI: http://geocities.com/
+<b>WARC-Source-URI: https://web.archive.org/web/19961226182558id_/http://geocities.com/</b>
+...
+</pre>
+                    </section>
+                    <section>
+                    <p>Example 2: Local file to WARC: warcit created WARC file with resource records from files on disk</p>
+<pre>
+WARC/1.0
+WARC-Type: resource
+...
+WARC-Date: 2010-01-01T00:00:00Z
+<b>WARC-Creation-Date: 2018-11-13T11:24:35Z</b>
+<b>WARC-Source-URI: /path/to/files/example.com/index.html</b>
+WARC-Target-URI: http://example.com/
+...
+</pre>
+                    </section>
+                    <section>
+                    <p>Example 3: Remote WARC record: A custom metadata record for WARC record extracted from another WARC</p>
+                    <p class="left" style="font-size: 80%">Adds <code>WARC-Source-Range</code> to indicate byte range used to fetch record</p>
+                    <p class="left" style="font-size: 80%">New WARC metadata record added pointing to the extracted record</p>
+<pre>
+WARC/1.0
+WARC-Type: metadata
+...
+WARC-Date: 2010-01-01T00:00:00Z
+<b>WARC-Creation-Date: 2018-11-13T11:24:35Z</b>
+<b>WARC-Source-URI: http://myarchive.example.com/path/to/warcs/mywarc.gz</b>
+<b>WARC-Source-Range: bytes=1000-1999
+WARC-Target-URI: http://example.com/
+WARC-Concurrent-To: <warc-record-id>
+...
+
+
+WARC/1.0
+WARC-Record-ID: <warc-record-id>
+</pre>
+                    </section>
+                </section>
+            </div>
+        </div>
+
+    <!-- Footer -->
+    <div style="position:absolute; bottom:1%; left:2%; width:100%; vertical-align: middle">
+        <a href="https://webrecorder.io/"><img style="vertical-align: middle; width: auto; height: 90px" src="img/webrecorder-logo-vector.svg"></a>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+
+        // Full list of configuration options available at:
+        // https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            history: true,
+            center: false,
+            margin: 0.05,
+
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+            // Optional reveal.js plugins
+            dependencies: [
+                { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                { src: 'plugin/zoom-js/zoom.js', async: true },
+                { src: 'plugin/notes/notes.js', async: true }
+            ]
+        });
+
+    </script>
+
+    </body>
+</html>
+g
