@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>Web Archive Security</title>
+
+        <meta name="description" content="Web Archives Security">
+        <meta name="author" content="Jack Cushman, Ilya Kreymer">
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/white_styled.css" id="theme">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+        <!-- Code syntax highlighting -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+                <!-- CUSTOM STYLE -->
+                <link rel="stylesheet" href="css/theme/white_styled.css" id="theme">
+                <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+
+        <style>
+            ul {
+                text-align: left !important;
+                display: block !important;
+            }
+            .clear-both {
+                clear: both;
+            }
+            .footer-links {
+                display: inline-block;
+                margin-left: 20px;
+                vertical-align: middle;
+                line-height: 1.5em;
+                font-family: sans-serif;
+                font-weight: bold;
+            }
+            .scale-diag {
+                width: 45%;
+                height: 45%
+            }
+
+            .tbl td {
+                text-align: center !important;
+                font-size: 80%;
+            }
+            .reveal pre {
+                line-height: 0.9em;
+                box-shadow: none;
+            }
+            .redh {
+                /*text-transform: uppercase;*/
+                text-align: left;
+                color: crimson !important;
+            }
+            .left {
+                text-align: left;
+                font-size: 80% !important;
+            }
+            .caps-label{
+              text-transform:uppercase!important;
+              font-size: 50%!important;
+              font-weight: 500!important;
+              display: block;
+              margin-bottom: -0.4em!important;
+            }
+            .url {
+              font-family: courier, monospace !important;
+              font-size: 90%;
+            }
+            .pad-top {
+                margin-top: 60px !important;
+            }
+             .footer-text {
+                font-size: 28px;
+                margin-left: 50px;
+                font-family: sans-serif;
+                display: inline;
+            }
+        </style>
+
+        <!--[if lt IE 9]>
+<script src="lib/js/html5shiv.js"></script>
+<![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <h3>pywb 2.x technical overview</h3>
+                    <h5>Or, everything you wanted to know about high fidelity web archiving, but were afraid to ask!</h5>
+                    <p style="margin-top: 100px">Ilya Kreymer, Webrecorder Lead Developer</p>
+                </section>
+
+                <section>
+                    <h3>What is High Fidelity?</h3>
+                    <section>
+                        <p class="fragment">(Not the movie)<br/>
+                            <img src="img/high-fidelity-movie.jpeg" style="width: 25%; height: 25%">
+                        </p>
+                    </section>
+                    <section>
+                        <h4>High Fidelity Audio</h4>
+                        <p>"The <i>reproduction</i> of sound with little distortion, giving a result very similar to the original."</p>
+                        <p style="text-align: right">from <i>merriam-webster.com</i></p>
+                    </section>
+                    <section>
+                        <h4>High Fidelity Web Archiving</h4>
+                        <p class="fragment">The <i>reproduction</i> of a web page with little distortion, giving a result very similar to the <i>original</i>?</p>
+                        <p class="fragment">The <i>reproduction</i> of a web page as it was originally designed to be experienced?</p>
+                        <p class="fragment">What exactly is original?<br/>What is distortion of a web page?</p>
+                    </section>
+                </section>
+                <section>
+                    <h3>What is pywb?</h3>
+                    <ul>
+                        <li class="fragment">A suite of web archiving tools</li>
+                        <li class="fragment">Originally designed as a new wayback machine</li>
+                        <li class="fragment">Includes High Fidelity Replay</li>
+                        <li class="fragment">and High Fidelity Capture! (Record Mode)</li>
+                        <li class="fragment">Core "engine" powering Webrecorder</li>
+                        <li class="fragment">Fully open-source and customizable</li>
+                        <li class="fragment">Docs: <a href="https://pywb.readthedocs.io">pywb.readthedocs.io</a></li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Why is "high fidelity" so hard?</h3>
+                    <p style="text-align: left">A modern web site is generally:</p>
+                    <ul>
+                        <li class="fragment">Not a static document!</li>
+                        <li class="fragment">Executes complex Javascript</li>
+                        <li class="fragment">Renders differently at different sizes...</li>
+                        <li class="fragment">...and on different browsers with different plugins</li>
+                        <li class="fragment">Includes cacheing and cache-busting</li>
+                        <li class="fragment">Responds to dynamic user input</li>
+                        <li class="fragment">Change URL at any time dynamically</li>
+                        <li class="fragment">Adapts to network latency and speed</li>
+                    </ul>
+                    <p class="fragment">Many web sites (applications) are <i>non-deterministic</i> = <br/>no exact original to archive!</i></p>
+                </section>
+                <section>
+                    <h3>What can we do?</h3>
+                    <p class="fragment">Try to reduce the non-determinism as much as we can!</p>
+                    <p class="fragment">A few "tricks":</p>
+                    <ul>
+                        <li class="fragment">Capture pages using a web browser...</li>
+                        <li class="fragment">...and Capture the browser!</li>
+                        <li class="fragment">Rewrite Urls and Tinker with JS Environment</li>
+                        <li class="fragment">Fuzzy Match Url Lookup</li>
+                        <li class="fragment">Adapt to Adaptive Streaming and Rendering</li>
+                        <li class="fragment">Preserve dynamic history changes</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Browser Based Capture</h3>
+                    <div class="fragment">Use same browser and tools for capture and replay:
+                        <p class="left">Replay:</p><span>http://myarchive.example.com/coll/http://example.com/</span>
+                        <p class="left">Capture:</p><span>http://myarchive.example.com/coll/<span class="redh">record</span>/http://example.com/</span>
+                    </div>
+                    <h4 class="fragment left pad-top">Capture the browser itself and run in containers and emulators<br/>(ex: <a href="http://oldweb.today">oldweb.today</a>)</h4>
+                </section>
+                <section>
+                    <h3>Url Rewriting and JS Tinkering</h3>
+                    <section>
+                        <p class="fragment">Traditional url rewriting:</p>
+                        <p class="fragment">http://example.com/ -> http://myarchive.institution.org/replay/http://example.com</p>
+
+                        <p class="fragment">But Javascript expects original url <i>http://example.com/</i> !</p>
+                    </section>
+                    <section>
+                        <p class="fragment">"Trick" the browser or simulate the original JS environment</p>
+                        <ul>
+                            <li class="fragment">Override many system JS functions</li>
+                            <li class="fragment"><i>Unrewrite</i> urls before passing them to user-defined functions</li>
+                            <li class="fragment"><i>Rewrite</i> urls before passing to any network-related function</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <p>A partial list of overrides:</p>
+                        <ul class="fragment" style="font-family: courier, monospace !important">
+                            <li>setAttribute, getAttribute</li>
+                            <li>DOM Element setter/getter</li>
+                            <li>AJAX Request/fetch()</li>
+                            <li>DOM insert/append functions</li>
+                            <li>Document/Window properties</li>
+                            <li>HTML insertion/document.write</li>
+                            <li>Web and Service workers</li>
+                            <li>History and hash change</li>
+                            <li>Cookie functions</li>
+                            <li>postMessage</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <p class="fragment">But some functions can't be overriden at all!</p>
+                        <p class="fragment">Ex: "location", "top", "window"</p>
+                        <p class="fragment">But can be masked by replacing:
+<pre class="left fragment">
+    location.href = "http://example.com/"
+</pre>
+<p class="fragment">With:</p>
+<pre class="left fragment">
+    // add a fake scope
+    {
+        let location = ...get fake location object
+        ...
+        location.href = "http://example.com/"
+    }
+</pre>
+                        <p class="fragment">(Discovered and added to pywb by <i>@johnaberlin</i>)</p>        
+                    </section>
+                </section>
+                <section>
+                    <h3>HTTP/S Proxy Mode</h3>
+                    <p class="fragment">pywb can also be used as an HTTP and HTTPS proxy (for capture and replay)</p>
+                    <p class="fragment left">😄 Running in proxy mode avoids the need for url rewriting and JS manipulation tricks! 😄</p>
+                    <p class="fragment left">😞 But not any of the other issues.. 😞</p>
+                </section>
+                <section>
+                    <h3>Fuzzy Match Url Lookup</h3>
+                    <p class="fragment"><span class="left">Captured:&nbsp;</span>http://example.com/some/path?_=12345</p>
+                    <p class="fragment"><span class="left">Replayed:&nbsp;</span>http://example.com/some/path?_=1234<span class="redh">6</span></p>
+                    <p class="fragment">Need to fuzzy match, ignore the _= query param!</p>
+                    <p class="fragment">pywb maintains a list of fuzzy matching rules</p> 
+                </section>
+                <section>
+                    <h3>Adaptive Rendering (Static)</h3>
+                    <p>Non-deterministic - browser loads only one of many options based on screen dimensions</p>
+                    <section>
+                        <p>HTML and CSS can be added dynamcially by Javascript</p>
+                    </section>
+                    <section>
+                        <p>CSS @media queries</p>
+<pre>
+/* If screen dimension is upto 1000px */
+@media screen and (max-width: 1000px) {
+  body {
+    background-image: <span class="redh">large.png</span>
+  }
+}
+
+/* If screen dimension is 500px or less */
+@media screen and (max-width: 500px) {
+  body {
+    background-color: <span class="redh">small.png</span>
+  }
+}
+</pre>
+                    </section>
+                    <section>
+                        <p>&lt;img&gt; srcset tag</p>
+<pre>
+&lt;img src="image-src.png"
+srcset="image-1x.png 1x,
+        image-2x.png 2x,
+        image-3x.png 3x,
+        image-4x.png 4x"&gt;
+</pre>
+                    </section>
+                    <section>
+                        <p>Solution: <i>Try to load all options, dynamically</i></p>
+                        <p>pywb (and Webrecorder) has a new 'Auto Fetch' system for loading all resolutions in the background during capture</p>
+                        <p class="fragment">See: Blog Post by John Berlin</p>
+                    </section>
+
+                    <p class="fragment"><span class="left">Captured:&nbsp;</span>http://example.com/some/path?_=12345</p>
+                    <p class="fragment"><span class="left">Replayed:&nbsp;</span>http://example.com/some/path?_=1234<span class="redh">6</span></p>
+                    <p class="fragment">Need to fuzzy match, ignore the _= query param!</p>
+                    <p class="fragment">pywb maintains a list of fuzzy matching rules</p> 
+                </section>
+                <section>
+                    <h3>Adaptive Video Streaming</h3>
+                    <section>
+                        <ul>
+                            <li class="fragment">A video is split into discreet chunks on the server</li>
+                            <li class="fragment">Server sends manifest of chunks, and possibly resolutions</li>
+                            <li class="fragment">Aftre each chunk, browser picks one of many options based on network speed/latency</li>
+                            <li class="fragment">DASH and HLS are two standards for this approach</li>
+                            <li class="fragment">Next url determined by current network conditions!</li>
+                            <li class="fragment">Non-deterministic by design</li>
+                        </ul>
+                    </section>
+                    <section>
+                        Possible options:
+                        <ol>
+                            <li>Trick browser into not using adaptive streaming at all!</li>
+                            <li>Use some other system to get video (eg. youtube-dl)</li>
+                            <li>Rewrite the HLS or DASH manifest to include only one resolution</li>
+                        </ol>
+                    </section>
+                    <section>
+                        <p>DASH / HLS manifest rewriting</p>
+                        <ul>
+                            <li class="fragment">For each video chunk, pick only one resolution (not necessarily highest)</li>
+                            <li class="fragment">Store choice in WARC as extra WARC header</li>
+                            <li class="fragment">Use same rewriting for capture and replay</li>
+                            <li class="fragment">One resolution only == deterministic behavior!</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <h3>Dynamic History Changes</h3>
+                    <p>History <i>pushState/replaceState</i> API allows manipulating currently displayed url
+                    </p>
+                    <ul>
+                        <li class="fragment">Page can change URL to any other on same domain</li>
+                        <li class="fragment">Designed for optimizing page loads</li>
+                        <li class="fragment">A URL seen by user does not mean a URL was loaded from server!</li>
+                        <li class="fragment">No way to save in WARC (yet)</li>
+                    </ul>
+                    <p class="fragment">Possible solution: <i>Store history changes in WARC?</i></p>
+                </section>
+                <section>
+                    <h3>Final Thoughts</h3>
+                    <p class="fragment">Many tricks needed to reproduce a modern web page at <i>high-fidelity</i></p>
+                    <p class="fragment">What is an "original" site if web is/becoming more non-deterministic</p>
+                    <p class="fragment">pywb solves some of these problems, but many more await</p>
+                    <p class="fragment">We need your help in working on these difficult out!</p>
+                </section>
+                <section>
+                    <h2>Addendum: Webrecorder Automation Demo!</h2>
+                </section>
+                <section>
+                    <h2>Thank you</h2>
+                    <h3>Q &amp; A</h3>
+                </section>
+            </div>
+        </div>
+
+    <!-- Footer -->
+    <div style="position:absolute; bottom:1%; left:2%; width:100%; vertical-align: middle">
+        <a href="https://webrecorder.io/"><img style="vertical-align: middle; width: auto; height: 90px" src="img/webrecorder-logo-vector.svg"></a>
+        <!-- <img style="vertical-align: middle" width="18%" src="img/wr-text.png"> -->
+        <!--<span class="footer-links">
+            <a href="https://webrecorder.io/" target="_blank">webrecorder.io</a><br/>
+            <a href="http://rhizome.org/" target="_blank">rhizome.org</a>
+        </span>-->
+        <!--<p class="footer-text">Web Archive Security</p>-->
+        <!--<span class="footer-links">
+            <a href="https://perma.cc/" target="_blank">Perma.cc</a>
+        </span>-->
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+
+        // Full list of configuration options available at:
+        // https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            history: true,
+            center: false,
+            margin: 0.05,
+
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+            // Optional reveal.js plugins
+            dependencies: [
+                { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                { src: 'plugin/zoom-js/zoom.js', async: true },
+                { src: 'plugin/notes/notes.js', async: true }
+            ]
+        });
+
+    </script>
+
+    </body>
+</html>
+g
