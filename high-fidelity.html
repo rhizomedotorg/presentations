@@ -219,9 +219,10 @@ location.href = "http://example.com/"
             <section>
                 <h3>HTTP/S Proxy Mode</h3>
                 <p class="fragment">pywb can also be used as an HTTP and HTTPS proxy<br/>(for both capture and replay)</p>
-                <p class="fragment">HTTPS proxy mode issues custom SSL certs, needs browser to accept CA</p>
-                <p class="fragment left">😄 Running in proxy mode avoids the need for url rewriting and JS manipulation tricks! 😄</p>
-                <p class="fragment left">😞 But not any of the other issues.. 😞</p>
+                <p class="fragment">More info in pywb docs: <a href="https://pywb.readthedocs.io/en/latest/manual/configuring.html#http-s-proxy-mode">HTTP/S Proxy Mode Setup</a></p>
+                <p class="fragment left">😄 Running in proxy mode avoids the need for url rewriting and JS sandboxing tricks! 😄</p>
+                <p class="fragment left">😞 But not any of the other replay/capture fidelity issues... 😞</p>
+                <p class="fragment left">Proxy Mode alone is no longer sufficient for high-fidelity capture and replay!</p>
             </section>
             <section>
                 <h3>Fuzzy Match Url Lookup</h3>
@@ -287,7 +288,7 @@ image-4x.png 4x"&gt;
                         <li class="fragment">Server sends manifest of chunks, and possibly resolutions</li>
                         <li class="fragment">Aftre each chunk, browser picks one of many options based on network speed/latency</li>
                         <li class="fragment">DASH and HLS are two standards for this approach</li>
-                        <li class="fragment">Next url determined by current network conditions!</li>
+                        <li class="fragment">Next url is determined by current network conditions!</li>
                         <li class="fragment">Non-deterministic by design</li>
                     </ul>
                 </section>
@@ -316,7 +317,7 @@ image-4x.png 4x"&gt;
                 </p>
                 <ul>
                     <li class="fragment">Page can change URL to any other on same domain</li>
-                    <li class="fragment">A URL show in browser does not mean a URL was loaded over HTTP</li>
+                    <li class="fragment">A URL shown in browser does not mean a URL was loaded over HTTP</li>
                     <li class="fragment">No way to save in WARC (yet)</li>
                 </ul>
                 <div class="fragment">Possible solution: <i>Store history changes in WARC?</i>
@@ -325,13 +326,13 @@ image-4x.png 4x"&gt;
             <section>
                 <h3>Conclusions</h3>
                 <p class="fragment">Many "tricks" needed to reproduce a modern web page at <i>high-fidelity</i></p>
-                <p class="fragment">pywb solves some of these problems,<br/>but many more remain.</p>
+                <p class="fragment">pywb solves some of these problems,<br/>but many more remain</p>
                 <p class="fragment">We need your help in working on these difficult issues!</p>
             </section>
 
             <section>
                 <h3>Next Steps</h3>
-                <p class="fragment">Continuous work on fidelity improvements to maintain <i>high-fidelity</i></p>
+                <p class="fragment">Continuous work on fidelity improvements is necessary.</p>
                 <p class="fragment">Automation of high fidelity web archiving!</p>
                 <p class="fragment">Explore overlap between software preservation and web archives.</p>
                 <p class="fragment left">Prototype combining web archives + browsers + sofware preservation: <br/>See: <a href="https://scalar.webrecorder.net">scalar.webrecorder.net</a>
