@@ -75,6 +75,9 @@
                 font-family: sans-serif;
                 display: inline;
             }
+            pre {
+                font-size: 16px !important;
+            }
         </style>
 
         <!--[if lt IE 9]>
@@ -144,17 +147,159 @@ WARC-Type: metadata
 WARC-Date: 2010-01-01T00:00:00Z
 <b>WARC-Creation-Date: 2018-11-13T11:24:35Z</b>
 <b>WARC-Source-URI: http://myarchive.example.com/path/to/warcs/mywarc.gz</b>
-<b>WARC-Source-Range: bytes=1000-1999
+<b>WARC-Source-Range: bytes=1000-1999</b>
 WARC-Target-URI: http://example.com/
-WARC-Concurrent-To: <warc-record-id>
+WARC-Concurrent-To: <i>warc-record-id</i>
 ...
 
 
 WARC/1.0
-WARC-Record-ID: <warc-record-id>
+WARC-Record-ID: <i>warc-record-id</i>
 </pre>
                     </section>
                 </section>
+
+                <section>
+                    <h3>Experimental Idea: Saving Dynamic History Records</h3>
+                    <section>
+                    <p>Intercept and capture <code>pushState()</code>calls</p>
+<pre>
+    window.history.pushState({"custom": "state"}, "Title", "/relative/url");
+    window.history.pushState({"custom": "another"}, "Anoher Title", "/another/url/dynamic");
+</pre>
+                    <p>Store as JSON list:</p>
+<pre>
+    "states": [
+        [{"custom": "state"}, "Title", "/relative/url"],
+        [{"custom": "another"}, "Anoher Title", "/another/url/dynamic"],
+    ]
+</pre>
+                    </section>
+                    <section>
+<pre>
+WARC-Type: metadata
+WARC-Record-ID: <urn:uuid:b23941e2-d750-428c-88e9-9060d676ee38>
+WARC-Payload-Digest: sha1:MC3EDZY4B4KAOFMPVBUULAJSSWI454UC
+WARC-Block-Digest: sha1:MC3EDZY4B4KAOFMPVBUULAJSSWI454UC
+Content-Type: application/vnd.pywb-waypoint+json; charset=utf-8
+Content-Length: 1054
+
+{
+    "base_url": "https://twitter.com/webrecorder_io",
+    "base_timestamp": "20180619152005",
+    "states": <b>[
+        [{
+            "inOverlay": true,
+            "rollbackCount": 1
+        }, "Webrecorder on Twitter: \"Indeed! We are really thrilled to announce that @johnaberlin will be joining the Webrecorder project as a Senior Backend Developer and bringing his #webarchiving expertise from @WebSciDL to the team here at @rhizome!… https://t.co/F2pq2Da7A2\"", "https://twitter.com/webrecorder_io/status/992176688887820288"]
+    ]</b>,
+    "init_state": [null, "Webrecorder (@webrecorder_io) | Twitter", "https://twitter.com/webrecorder_io"],
+    "curr_state": [{
+        "inOverlay": true,
+        "rollbackCount": 1
+    }, "Webrecorder on Twitter: \"Indeed! We are really thrilled to announce that @johnaberlin will be joining the Webrecorder project as a Senior Backend Developer and bringing his #webarchiving expertise from @WebSciDL to the team here at @rhizome!… https://t.co/F2pq2Da7A2\"", "https://twitter.com/webrecorder_io/status/992176688887820288"],
+    "final_url": "https://twitter.com/webrecorder_io/status/992176688887820288"
+}
+</pre>
+
+                    </section>
+
+                    <section>
+<pre>
+WARC-Type: metadata
+WARC-Record-ID: <urn:uuid:d015a6c4-98d0-47b5-8fd0-d15f3a64c56b>
+WARC-Payload-Digest: sha1:XENSDL25R7HGVGD5U4ORVUC3Y3QAJK2S
+WARC-Block-Digest: sha1:XENSDL25R7HGVGD5U4ORVUC3Y3QAJK2S
+Content-Type: application/vnd.pywb-waypoint+json; charset=utf-8
+Content-Length: 1033
+
+{
+    "base_url": "https://twitter.com/webrecorder_io",
+    "base_timestamp": "20180619152005",
+    "states": [
+        <b>[{
+            "inOverlay": true,
+            "rollbackCount": 1
+        }, "Webrecorder on Twitter: \"Indeed! We are really thrilled to announce that @johnaberlin will be joining the Webrecorder project as a Senior Backend Developer and bringing his #webarchiving expertise from @WebSciDL to the team here at @rhizome!… https://t.co/F2pq2Da7A2\"", "https://twitter.com/webrecorder_io/status/992176688887820288"],
+        [{
+            "inOverlay": true,
+            "rollbackCount": 2
+        }, "Uncle Traveller on Twitter: \"Amazing! Congratulations @johnaberlin!! #digipres #webarchives… \"", "https://twitter.com/beet_keeper/status/992293419127984130"]
+    ]</b>,
+    "init_state": [null, "Webrecorder (@webrecorder_io) | Twitter", "https://twitter.com/webrecorder_io"],
+    "curr_state": [{
+        "inOverlay": true,
+        "rollbackCount": 2
+    }, "Uncle Traveller on Twitter: \"Amazing! Congratulations @johnaberlin!! #digipres #webarchives… \"", "https://twitter.com/beet_keeper/status/992293419127984130"],
+    "final_url": "https://twitter.com/beet_keeper/status/992293419127984130"
+}  final_url: "https: //twitter.com/webrecorder_io/status/992176688887820288"
+}
+</pre> </section>
+<section>
+<pre>
+WARC-Type: metadata
+WARC-Record-ID: <urn:uuid:54e9edef-6185-4e4a-9e5a-b9f2ade91977>
+WARC-Payload-Digest: sha1:PSL7KDE5FBQ2U5RF6TQEDQATNYXILG2O
+WARC-Block-Digest: sha1:PSL7KDE5FBQ2U5RF6TQEDQATNYXILG2O
+Content-Type: application/vnd.pywb-waypoint+json; charset=utf-8
+Content-Length: 1698
+
+{
+    "base_url": "https://twitter.com/webrecorder_io",
+    "base_timestamp": "20180619152005",
+    "states": <b>[
+        [{
+            "inOverlay": true,
+            "rollbackCount": 1
+        }, "Webrecorder on Twitter: \"Indeed! We are really thrilled to announce that @johnaberlin will be joining the Webrecorder project as a Senior Backend Developer and bringing his #webarchiving expertise from @WebSciDL to the team here at @rhizome!… https://t.co/F2pq2Da7A2\"", "https://twitter.com/webrecorder_io/status/992176688887820288"],
+        [{
+            "inOverlay": true,
+            "rollbackCount": 2
+        }, "Uncle Traveller on Twitter: \"Amazing! Congratulations @johnaberlin!! #digipres #webarchives… \"", "https://twitter.com/beet_keeper/status/992293419127984130"],
+        [{
+            "inOverlay": true,
+            "rollbackCount": 3
+        }, "Michael L. Nelson on Twitter: \"buried at the bottom of @johnaberlin's excellent MS thesis summary is this exciting news: after this weekend's graduation he will be a back end developer for @webrecorder_io joining @IlyaKreymer, @despens @AnnaPerricci \n@michael_connor et al. at @rhizome!\n\nhttps://t.co/5KxSLmC0kA\"", "https://twitter.com/phonedude_mln/status/991675218715430912"]
+    ]</b>,
+    "init_state": [null, "Webrecorder (@webrecorder_io) | Twitter", "https://twitter.com/webrecorder_io"],
+    "curr_state": [{
+        "inOverlay": true,
+        "rollbackCount": 3
+    }, "Michael L. Nelson on Twitter: \"buried at the bottom of @johnaberlin's excellent MS thesis summary is this exciting news: after this weekend's graduation he will be a back end developer for @webrecorder_io joining @IlyaKreymer, @despens @AnnaPerricci \n@michael_connor et al. at @rhizome!\n\nhttps://t.co/5KxSLmC0kA\"", "https://twitter.com/phonedude_mln/status/991675218715430912"],
+    "final_url": "https://twitter.com/phonedude_mln/status/991675218715430912"
+}
+</pre>
+                    </section>
+                    <section>
+                <p>pywb can be extended to replay such records</p>
+                    </section>
+                </section>
+
+                <section>
+                    <h3>WARC Extension Usage</h3>
+                    <p>We switched WARC downloads from <b>.warc.gz</b> to <b>.warc</b></p>
+                    <section>
+                    <ul>
+                        <li>Browsers (Safari) uncompress the WARC automatically</li>
+                        <li>OSes open .warc.gz files with default .gz compress utility</li>
+                        <li>Often decompress only the first record</li>
+                        <li>Users end up with broken WARC files :(</li>
+                    </ul>
+                    </section>
+
+                    <section>
+                        <h4>A Goal? To make WARCs as ubiquitous as PDFs for browsing web content!</h4>
+                        <p class="left">WARCs have a .warc extension (regardless of compression)</p>
+                        <p class="left">Users understand that a WARC file contains a web page, represented with .warc extension</p>
+                        <p class="left">Viewers to open WARC on the desktop (eg. Webrecorder Player)</p>
+                        <p class="left">A standard way to specify entrypoints?</p>
+                    </section>
+
+
+                </section>
+
+
+
             </div>
         </div>
 
