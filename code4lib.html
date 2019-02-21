@@ -108,6 +108,7 @@
                 <ul>
                     <li class="fragment">A set of FOSS tools for creating and viewing web archives</a></li>
                     <li class="fragment">A free, hosted service running on <a href="https://webrecorder.io/">https://webrecorder.io/</a></li>
+                    <li class="fragment">Supports anonymous capture and user account system</li>
                     <li class="fragment">Browser-based capture and access focusing on high-fidelity</b></li>
                     <li class="fragment">Goal is web archiving for all!</li>
                     <li class="fragment">Stewarded by Rhizome, an arts non-profit in NYC</li>
@@ -137,12 +138,12 @@
                     <li class="fragment">Standardized (ISO) file format for web archives</li>
                     <li class="fragment">Concatenated byte-level capture of each HTTP (1.x) request and response</li>
                     <li class="fragment">Optional metadata records (no set standard)</li>
-                    <li class="fragment">Supported by Webrecorder</li>
+                    <li class="fragment">Webrecorder produces standard WARCs</li>
                 </ul>
             </section>
 
             <section>
-                    <h2>Demo!</h2>
+                    <h2><a href="https://webrecorder.io/" target="_blank">Demo!</a></h2>
             </section>
 
             <section>
@@ -199,7 +200,7 @@ with capture_http('example.warc.gz', warc_version='1.1'):
                     <pre class="left fragment">
 pip install pywb
 wb-manager init my-web-archive
-wayback --proxy --record my-web-archive --proxy-record
+wayback --proxy my-web-archive --proxy-record --live
 google-chrome http://localhost:8080/my-web-archive<span class="redh">/record/</span>http://example.com/
                     </pre>
 <li class="fragment">OR</li>
@@ -246,9 +247,9 @@ google-chrome --proxy-server=http://localhost:8080 https://example.com/
                     <li class="fragment">Preserving browsers with Flash, even Java</li>
                     <li class="fragment">Several versions of Chrome, Firefox</li>
                     <li class="fragment">Access via VNC + WebRTC</li>
-                    <li class="fragment">Lots of Code: <a href="https://github.com/oldweb-today">oldweb-today</a></li>
+                    <li class="fragment">Lots of Code: <a href="https://github.com/oldweb-today">github.com/oldweb-today</a></li>
                     <li class="fragment">Docs still needed</li>
-                    <li class="fragment">Another Browser: <a href="http://54.164.112.170:9020/view/www/http://info.cern.ch/hypertext/WWW/TheProject.html">demo</a>
+                    <li class="fragment">Another Browser: <a href="http://54.164.112.170:9020/view/www/http://info.cern.ch/hypertext/WWW/TheProject.html" target="_blank">demo</a>
                 </ul>
             </section>
 
@@ -266,7 +267,7 @@ google-chrome --proxy-server=http://localhost:8080 https://example.com/
 
             <section>
                 <h3>What if I want to try it all!</h3>
-                <h4 class="fragment">webrecorder/webrecorder repo</h4>
+                <h4 class="fragment">webrecorder/webrecorder</h4>
                 <ul>
                     <li class="fragment">Full system running on webrecorder.io</li>
                     <li class="fragment">Containerized deployment with Docker Compose</li>
