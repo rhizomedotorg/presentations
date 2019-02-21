@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Webrecorder Open Source Tools</title>
+
+    <meta name="description" content="Webrecorder Open Source Tools">
+    <meta name="author" content="Ilya Kreymer">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white_styled.css" id="theme">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <style>
+    ul {
+        text-align: left !important;
+        display: block !important;
+    }
+    .clear-both {
+        clear: both;
+    }
+    .footer-links {
+        display: inline-block;
+        margin-left: 20px;
+        vertical-align: middle;
+        line-height: 1.5em;
+        font-family: sans-serif;
+        font-weight: bold;
+    }
+    .reveal pre {
+        line-height: 0.9em;
+        box-shadow: none;
+    }
+    .redh {
+        /*text-transform: uppercase;*/
+        text-align: left;
+        color: crimson !important;
+    }
+    .greenh {
+        /*text-transform: uppercase;*/
+        color: green !important;
+    }
+    .imgsqr {
+        width: 128px;
+        height: 128px;
+    }
+    .left {
+        text-align: left;
+        font-size: 80% !important;
+        margin: 0px;
+        left: -300px;
+        position: absolute;
+        margin: 0px;
+    }
+    .url {
+      font-family: courier, monospace !important;
+      font-size: 90%;
+  }
+  .pad-top {
+    margin-top: 60px !important;
+}
+.footer-text {
+    font-size: 28px;
+    margin-left: 50px;
+    font-family: sans-serif;
+    display: inline;
+}
+</style>
+
+        <!--[if lt IE 9]>
+<script src="lib/js/html5shiv.js"></script>
+<![endif]-->
+</head>
+
+<body>
+
+    <div class="reveal">
+
+        <!-- Any section element inside of this container is displayed as a slide -->
+        <div class="slides">
+            <section>
+                <h3>Webrecorder: Open Source Web Archiving Toolset</h3>
+                <p style="margin-top: 100px">Ilya Kreymer, Webrecorder Lead Developer</p>
+                <p>@IlyaKreymer</p>
+            </section>
+
+            <section>
+                <h3>What is Webrecorder?</h3>
+                <ul>
+                    <li class="fragment">A set of FOSS tools for creating and viewing web archives</a></li>
+                    <li class="fragment">A free, hosted service running on <a href="https://webrecorder.io/">https://webrecorder.io/</a></li>
+                    <li class="fragment">Browser-based capture and access focusing on high-fidelity</b></li>
+                    <li class="fragment">Goal is web archiving for all!</li>
+                    <li class="fragment">Stewarded by Rhizome, an arts non-profit in NYC</li>
+                    <li class="fragment">Team of six working on Webrecorder</li>
+                    <li class="fragment">Supported by two grants from the Mellon Foundation</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>How is Webrecorder different?</h3>
+                <ul>
+                    <li class="fragment">Traditional web archiving is crawler based</li>
+                    <p><img class="fragment" style="float: right" src="img/heritrix.gif"/></p>
+                    <li class="fragment">Crawler loads URLs, starting with a list of 'seeds'</li>
+                    <li class="fragment">Parse HTML to find more urls to crawl</li>
+                    <li class="fragment">Store HTTP traffic in lossless format (WARC)</li>
+                    <li class="fragment">Easy to parse HTML == Fast!</li>
+                    <li class="fragment">Easy to crawl lots of content in bulk!</li>
+                    <li class="fragment redh">Mostly inadequate for modern websites, because</li>
+                    <p><img class="fragment imgsqr" src="img/JavaScript-logo.png"/></p>
+                </ul>
+            </section>
+
+            <section>
+                <h3>What's a WARC?</h3>
+                <ul>
+                    <li class="fragment">Standardized (ISO) file format for web archives</li>
+                    <li class="fragment">Concatenated byte-level capture of each HTTP (1.x) request and response</li>
+                    <li class="fragment">Optional metadata records (no set standard)</li>
+                    <li class="fragment">Supported by Webrecorder</li>
+                </ul>
+            </section>
+
+            <section>
+                    <h2>Demo!</h2>
+            </section>
+
+            <section>
+                <h2>Web archiving != Archiving the entire web!</h2>
+                <ul>
+                    <li class="fragment">Web archives can be small</li>
+                    <li class="fragment">Web archives can contain bounded objects</li>
+                    <li class="fragment">Quality over quantity!</li>
+                    <li class="fragment">You can run Webrecorder at your institution today!</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>The Webrecorder Stack</h3>
+                <ul>
+                    <li class="fragment">Componentized Architecture</li>
+                    <li class="fragment">Python and JS</li>
+                    <li class="fragment">Lots of tools of developers</li>
+                    <li class="fragment"><a href="https://github.com/webrecorder">https://github.com/webrecorder</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>What if I just want to read/write WARC files?</h3>
+                <h4 class="fragment">warcio</h4>
+                <ul>
+                    <li class="fragment">package for creating and reading WARC files</li>
+                    <li class="fragment">Make a WARC in 4 lines of Python:</li>
+                    <pre class="left fragment">
+from warcio.capture_http import capture_http
+import requests
+
+with capture_http('example.warc.gz', warc_version='1.1'):
+     requests.get('https://example.com/ ')
+                    </pre>
+                    <li class="fragment">Code: <a href="https://github.com/webrecorder/warcio">warcio</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>pywb</h3>
+                <h4>Python Wayback / Web Archive Toolkit</h4>
+                <ul>
+                    <li class="fragment">Core "engine" powering Webrecorder</li>
+                    <li class="fragment">Create and view WARCs through browser, via rewritten urls and HTTP/S proxy</li>
+                    <li class="fragment">Docs: <a href="https://pywb.readthedocs.io">pywb.readthedocs.io</a></li>
+                    <li class="fragment">Code: <a href="https://github.com/webrecorder/pywb">pywb</a></li>
+                </ul>
+            </section>
+            <section>
+                <h3>What if I want to archive through the browser?</h3>
+                <ul>
+                    <li>Create a web archive of a page in 4 line script:</li>
+                    <pre class="left fragment">
+pip install pywb
+wb-manager init my-web-archive
+wayback --proxy --record my-web-archive --proxy-record
+google-chrome http://localhost:8080/my-web-archive<span class="redh">/record/</span>http://example.com/
+                    </pre>
+<li class="fragment">OR</li>
+                    <pre class="left fragment">
+google-chrome --proxy-server=http://localhost:8080 https://example.com/
+                    </pre>
+                </ul>
+            </section>
+            <section>
+                <h3>What if I want to host a wayback machine/provide access?</h3>
+                <ul>
+                    <li>View an archive of with a 4-line script:</li>
+                    <pre class="left fragment">
+pip install pywb
+wb-manager init my-web-archive
+wayback --proxy my-web-archive
+google-chrome http://localhost:8080/my-web-archive/http://example.com/
+                    </pre>
+<li class="fragment">OR</li>
+                    <pre class="left fragment">
+google-chrome --proxy-server=http://localhost:8080 https://example.com/
+                    </pre>
+                </ul>
+            </section>
+
+            <section>
+                <h3>What if I want a simple desktop app for users to browse a web archive?</h3>
+                <h4 class="fragment">Webrecorder Player</h4>
+                <img class="fragment imgsqr" src="img/WRlogo.png"></li>
+                <ul>
+                    <li class="fragment">Electron Desktop App for OSX, Windows, Linux</li>
+                    <li class="fragment">Open and browse any WARC file locally, offline</li>
+                    <li class="fragment">UI consistent with webrecorder.io</li>
+                    <li class="fragment"><a href="https://github.com/webrecorder/webrecorder-player/releases">Released via Github</a></li>
+                    <li class="fragment">Code: <a href="https://github.com/webrecorder/webrecorder-player">webrecorder-player</a></li>
+            </section>
+
+            <section>
+                <h3>What if I want a specific browser, eg. with Flash?</h3>
+                <h4>Remote Browser System</h4>
+                <ul>
+                    <li class="fragment">Docker containers each containing a web browser</li>
+                    <li class="fragment">Originally developed for <a href="http://oldweb.today/">oldweb.today</a></li>
+                    <li class="fragment">Preserving browsers with Flash, even Java</li>
+                    <li class="fragment">Several versions of Chrome, Firefox</li>
+                    <li class="fragment">Access via VNC + WebRTC</li>
+                    <li class="fragment">Lots of Code: <a href="https://github.com/oldweb-today">oldweb-today</a></li>
+                    <li class="fragment">Docs still needed</li>
+                    <li class="fragment">Another Browser: <a href="http://54.164.112.170:9020/view/www/http://info.cern.ch/hypertext/WWW/TheProject.html">demo</a>
+                </ul>
+            </section>
+
+            <section>
+                <h3>What if I want to make a custom behavior?</h3>
+                <h4 class="fragment">Webrecorder Behaviors</h4>
+                <ul>
+                    <li class="fragment">Working on an extensible per-site behavior system</li>
+                    <li class="fragment">Will provide a JS library for building behaviors</li>
+                    <li class="fragment">API and documentation coming soon</li>
+                    <li class="fragment">Talk to us about beta-testing!</li>
+                    <li class="fragment">Code: <a href="https://github.com/webrecorder/wr-behaviors">wr-behaviors</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>What if I want to try it all!</h3>
+                <h4 class="fragment">webrecorder/webrecorder repo</h4>
+                <ul>
+                    <li class="fragment">Full system running on webrecorder.io</li>
+                    <li class="fragment">Containerized deployment with Docker Compose</li>
+                    <li class="fragment">Adds user, collection management, friendly UI</li>
+                    <li class="fragment">Integrates Remote Browser System</li>
+                    <li class="fragment">API Backend, React Frontend</li>
+                    <li class="fragment">Code: <a href="https://github.com/webrecorder/webrecorder">webrecorder</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Any other tools?</h3>
+                <ul>
+                    <li class="fragment"><a href="https://github.com/webrecorder/webrecorder-deploy">webrecorder-deploy</a> -- Ansible cookbook for Webrecorder deployment</li>
+                    <li class="fragment"><a href="https://github.com/webrecorder/warcit">warcit</a> -- turn files on disk into WARCs</li>
+                    <li class="fragment"><a href="https://github.com/webrecorder/har2warc">har2warc</a> -- convert HAR files into WARCs</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Have we solved web archiving?</h3>
+                <p style="text-align: left" class="fragment">Unfortunately, many challenges remain:</p>
+                <ul>
+                    <li class="fragment">Websockets</li>
+                    <li class="fragment">HTTP/2</li>
+                    <li class="fragment">Dynamic History / Single Page Apps</li>
+                    <li class="fragment">Non-deterministic behaviors (eg. using time)</li>
+                </ul>
+                <p class="greenh fragment">Want to help? Contributions Welcome!</p>
+             </section>
+             <section>
+                <h2>Thank you</h2>
+                <h3>Q &amp; A</h3>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="position:absolute; bottom:1%; left:2%; width:100%; vertical-align: middle">
+        <a href="https://webrecorder.io/"><img style="vertical-align: middle; width: auto; height: 90px" src="img/webrecorder-logo-vector.svg"></a>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+
+        // Full list of configuration options available at:
+        // https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            history: true,
+            center: false,
+            margin: 0.05,
+
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+            // Optional reveal.js plugins
+            dependencies: [
+            { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+            { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+            { src: 'plugin/zoom-js/zoom.js', async: true },
+            { src: 'plugin/notes/notes.js', async: true }
+            ]
+        });
+
+    </script>
+
+</body>
+</html>
+
