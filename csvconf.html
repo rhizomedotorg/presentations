@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Webrecorder Open Source Tools</title>
+
+    <meta name="description" content="Webrecorder Open Source Tools">
+    <meta name="author" content="Ilya Kreymer">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white_styled.css" id="theme">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <style>
+
+    body {
+        font-size: 24px;
+    }
+
+    ul {
+        text-align: left !important;
+        display: block !important;
+    }
+    .clear-both {
+        clear: both;
+    }
+    .footer-links {
+        display: inline-block;
+        margin-left: 20px;
+        vertical-align: middle;
+        line-height: 1.5em;
+        font-family: sans-serif;
+        font-weight: bold;
+    }
+    .reveal pre {
+        line-height: 0.9em;
+        box-shadow: none;
+    }
+    .redh {
+        /*text-transform: uppercase;*/
+        text-align: left;
+        color: crimson !important;
+    }
+    .greenh {
+        /*text-transform: uppercase;*/
+        color: green !important;
+    }
+    .imgsqr {
+        width: 128px;
+        height: 128px;
+    }
+    .left {
+        text-align: left;
+        font-size: 80% !important;
+        margin: 0px;
+        left: -300px;
+        position: absolute;
+        margin: 0px;
+    }
+    .url {
+      font-family: courier, monospace !important;
+      font-size: 90%;
+  }
+  .pad-top {
+    margin-top: 60px !important;
+}
+.footer-text {
+    font-size: 28px;
+    margin-left: 50px;
+    font-family: sans-serif;
+    display: inline;
+}
+</style>
+
+        <!--[if lt IE 9]>
+<script src="lib/js/html5shiv.js"></script>
+<![endif]-->
+</head>
+
+<body>
+
+    <div class="reveal">
+
+        <!-- Any section element inside of this container is displayed as a slide -->
+        <div class="slides">
+            <section>
+                <h3>WARC Files and Beyond: Making sense of web archive data</h3>
+                <h4>csv,conf,v4</h4>
+                <p style="margin-top: 100px">Ilya Kreymer, Webrecorder Lead Developer</p>
+                <p>@IlyaKreymer @webrecorder_io</p>
+            </section>
+
+            <section>
+                <h3>About me</h3>
+                <ul>
+                    <li class="fragment">Working on Open Source Web Archiving Tools for 8 years</li>
+                    <li class="fragment">Worked on Internet Archive Wayback Machine</li>
+                    <li class="fragment">Created Webrecorder Project in 2015</li>
+                    <li class="fragment">Leading Development on Webrecorder at Rhizome.org, a digital arts non-profit</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>What is Web Archiving?</h3>
+                <ul>
+                    <li class="fragment">Capturing, Storing, Providing Access to Web Content</li>
+                    <br/>
+                    <li class="fragment">Not Scraping, Extraction</li>
+                    <li class="fragment">Not Saving Urls</li>
+                    <li class="fragment">Web == HTTP</li>
+                    <li class="fragment">Capture HTTP Request and Response Traffic</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Web archiving != Archiving the entire web</h3>
+                <ul>
+                    <li class="fragment">Web archives can be small</li>
+                    <li class="fragment">Web archives can contain bounded objects</li>
+                    <li class="fragment">Can focus on quality over quantity</li>
+                </ul>
+            </section>
+
+            <section id="why">
+                <h3>Why Web Archive</h3>
+                <div class="fragment">
+                    <img src="./img/disappear.jpg" style="width: 50%; height: 50%"/>
+                    <div style="font-size: 24px; line-height: 0.25em">Source: <a href="http://anjackson.net/2015/04/27/what-have-we-saved-iipc-ga-2015/">Ten years of the UK web archive: what have we saved?</a></span>
+                </div>
+                <p class="fragment">Web content changes and disappears over time</p>
+            </section>
+
+            <section id="who">
+                <h3>Who Is Web Archiving?</h3>
+
+                <ul>
+                    <li class="fragment"><a href="https://web.archive.org/web/">Internet Archive Wayback Machine</a></li>
+                    <li class="fragment"><a href="https://netpreserve.org/">Many National Libraries around the world</a></li>
+                    <li class="fragment">...Hopefully you can be too, if you want to!</li>
+                </ul>
+            </section>
+                    
+            <section>
+                <h3>How is Web Archive Data Stored?</h3>
+                <ul>
+                    <li class="fragment">The <b style="color: gray">WARC</b> (<b style="color: gray">W</b>eb <b style="color: gray">ARC</b>hive) Format</li>
+                    <li class="fragment">Created in collaboration between Internet Archive, many national libraries in 2005</li>
+                    <li class="fragment"><a href="http://bibnum.bnf.fr/WARC/WARC_ISO_28500_version1_latestdraft.pdf">WARC 1.0 ISO Standard from 2005</a></li>
+                    <li class="fragment"><a href="http://bibnum.bnf.fr/WARC/WARC_ISO_28500_version1-1_latestdraft.pdf">WARC 1.1 ISO Standard updated in 2016</a></li>
+                    <li class="fragment">Designed to package HTTP request and responses, support deduplication, metadata, other arbitrary resources</li>
+                </ul>
+            </section>
+            <section id="warcformat1">
+                <h3>WARC Format: Response Record</h3>
+                <ul>
+                    <li class="fragment">WARC file contains or more concatenated records</li>
+                    <li class="fragment">Each record contains MIME-style WARC headers, followed by HTTP headers, followed by HTTP payload</li>
+                    <li class="fragment">HTTP response record, <span class="inline-code">WARC-Type: response</span>
+                        <pre class="fragment"><p data-trim style="font-size: smaller">
+WARC/1.0
+WARC-Type: response
+WARC-Date: 2013-12-04T16:47:32Z
+WARC-Record-ID: <urn:uuid:3619f5b0-d967-44be-8f24-762098d427c4>
+WARC-Payload-Digest: sha1:B2LTWWPUOYAH7UIPQ7ZUPQ4VMBSVC36A
+WARC-Target-URI: http://example.com/
+Content-Length: 200
+Content-Type: application/http; msgtype=response
+...
+
+HTTP/1.0 200 OK
+Server: nginx
+Content-Type: text/html
+Content-Length: 100
+...
+
+&lt;html&gt;
+...
+
+                    </p>
+                    </pre>
+                    </li>
+                </ul>
+            </section>
+
+            <section id="warcformat2">
+                    <h3>WARC Format: Request Record</h3>
+                    <ul>
+                        <li class="fragment">HTTP Request record, <span class="inline-code">WARC-Type: request</span>
+                            <pre class="fragment"><p data-trim style="">
+WARC/1.0
+WARC-Type: request
+WARC-Record-ID: <urn:uuid:c59f3330-b241-4fca-8513-d687cd85bcfb>
+WARC-Date: 2014-01-03T03:03:41Z
+Content-Length: 320
+Content-Type: application/http; msgtype=request
+...
+
+GET / HTTP/1.0
+...
+                        </p>
+                        </pre>
+                        </li>
+                        <li class="fragment">Supports any other HTTP verb, includes payload if necessary.</li>
+                    </ul>
+            </section>
+
+            <section>
+                <h3>Limitations of WARC</h3>
+                <ul>
+                    <li class="fragment">No built-in index of all records</li>
+                    <li class="fragment">No defined metadata format.</li>
+                    <li class="fragment">No way to specify starting pages</li>
+                    <li class="fragment">No support for recent web features (websockets, dynamic history changes, etc..)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Accessing Web Archives -- Url Index</h3>
+                <ul>
+                    <li class="fragment">Need an index from url to WARC location</li>
+                    <li class="fragment">A text-based, space-delimited (!) text index (CDX) popularized by IA:</li>
+                    <pre class="fragment"> 
+                        <p data-trim style="font-size: smaller; max-width: 1000px">
+com,example)/?example=1 20140103030321 http://example.com?example=1 text/html 200
+ B2LTWWPUOYAH7UIPQ7ZUPQ4VMBSVC36A - - 1043 333 example.warc.gz</p></pre>
+                    </pre>
+                    <li class="fragment">CDX + JSON (CDXJ) variation</li>
+                    <pre class="fragment">
+                        <p data-trim style="font-size: smaller; max-width: 1000px">
+com,example)/?example=1 20140103030321 {"url": "http://example.com?example=1",
+"digest": "B2LTWWPUOYAH7UIPQ7ZUPQ4VMBSVC36A",
+"length": "1043", "offset": "333", "filename": "example.warc.gz"}
+                        </p>
+                    </pre>
+
+                    <li class="fragment"><a href="https://web.archive.org/cdx?url=csvconf.com">CDX Query to Internet Archive</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Accessing Web Archives -- Replay Rules</h3>
+                <section>
+                    <ul>
+                    <li class="fragment">Replay can be harder than capture!</li>
+                    <li class="fragment">Need to match HTTP request to response</li>
+                    <li class="fragment">What if there is no exact match?</li>
+                    <li class="fragment">Web Archiving is often a reproducability problem</li>
+                    </ul>
+                </section>
+                <section>
+                    <p class="fragment"><span class="left">Captured:&nbsp;</span>http://example.com/some/path?<span class="redh">_=12345</span></p>
+                    <p class="fragment"><span class="left">Replayed:&nbsp;</span>http://example.com/some/path?<span class="redh">_=67890</span></p>
+                    <p class="fragment">Need to fuzzy match, ignore the <span class="redh">_=</span>&nbsp;(a timestamp param)</p>
+                    <p class="fragment">How do we know what query params to ignore?</p>
+                </section>
+                <section>
+                    <p class="fragment"><span class="left">Captured:&nbsp;</span>http://example.com/some/path?<span class="greenh">id=ABC</span>&amp;__otherparam=abc&amp;other=test</p>
+                    <p class="fragment"><span class="left">Replayed:&nbsp;</span>http://example.com/some/path?__temp=testid&amp;<span class="greenh">id=ABC</span>&amp;__foo=234</p>
+                    <p class="fragment">Only match the <span class="greenh">id=</span> query parameter</p>
+                    <p class="fragment">Need to store these 'fuzzy matching' rules</p> 
+                </section>
+            </section>
+            <section>
+                <h3>Web Archive Collections</h3>
+                <ul>
+                    <li class="fragment">Need to group WARC files into collections of archived content</li>
+                    <li class="fragment">Need a way to specify key starting pages</li>
+                    <li class="fragment">Need to support editing metadata, but not WARC data</li>
+                    <li class="fragment">Unfortunately, no set standard on this yet</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Analyzing Web Archives</h3>
+                <ul>
+                    <li class="fragment">Generating derivative data sets from WARC files</li>
+                    <li class="fragment">Excellent Toolset: <a href="https://archivesunleashed.org/aut/">Archives Unleashed Toolkit</a></li>
+                    <li class="fragment">Provides tools for data extraction in bulk</li>
+                    <li class="fragment">Support for text extraction, HTML extraction, link analysis, image analysis, and more</li>
+                    <li class="fragment">How to organize and distribute all this data?</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Web Archive Data can include:</h3>
+                <ul>
+                    <li class="fragment">WARC files</li>
+                    <li class="fragment">Url Indexes</li>
+                    <li class="fragment">Page Lists</li>
+                    <li class="fragment">Replay Rules</li>
+                    <li class="fragment">Search Indices</li>
+                    <li class="fragment">Other Derivative Datasets</li>
+                    <li class="fragment">Organized by Collection</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>How can I start web archiving on my own?<h2>
+                <br/>
+                <h2 class="fragment"><a href="https://webrecorder.io/" target="_blank"><img style="vertical-align: middle; width: auto; height: 200px" src="img/webrecorder-logo-vector.svg"></a></h2>
+            </section>
+
+            <section>
+                <h3>The Webrecorder Project</h3>
+                <ul>
+                    <li class="fragment">Web Archiving for All!</li>
+                    <li class="fragment">Focus on 'high-fidelity', accurate capture and replay of web pages</li>
+                    <li class="fragment">User-friendly service and apps for creating and accessing web archive collections</li>
+                    <li class="fragment">FOSS toolset for creating and accessing web archives:</li>
+                    <li class="fragment"><a href="https://github.com/webrecorder">https://github.com/webrecorder</a></li>
+                    <li class="fragment">Team of six working on Webrecorder, with support from Mellon Foundation</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>What if I just want to read/write WARC files?</h3>
+                <h4 class="fragment">warcio</h4>
+                <ul>
+                    <li class="fragment">package for creating and reading WARC files</li>
+                    <li class="fragment">Make a WARC in 4 lines of Python:</li>
+                    <pre class="left fragment">
+from warcio.capture_http import capture_http
+import requests
+
+with capture_http('example.warc.gz', warc_version='1.1'):
+     requests.get('https://example.com/ ')
+                    </pre>
+                    <li class="fragment">Code: <a href="https://github.com/webrecorder/warcio">warcio</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>What if I want to package existing files as WARCs</h3>
+                <h4 class="fragment">warcit</h4>
+                <ul>
+                    <li class="fragment">A CLI tool for packing files and directories as WARCs</li>
+                    <li class="fragment">Create my-site.warc from contents of ./my-site-data/ directory:</li>
+                    <pre class="left fragment">
+warcit -n my-site.warc http://www.mysite.example.com/ ./my-site-data/
+                    </pre>
+                </ul>
+            </section>
+
+            <section>
+                <h3>pywb</h3>
+                <h4>Python Wayback / Web Archive Toolkit</h4>
+                <ul>
+                    <li class="fragment">Core "engine" powering Webrecorder</li>
+                    <li class="fragment">Create and view WARCs through browser, via rewritten urls and HTTP/S proxy</li>
+                    <li class="fragment">Directory-based config for web archive data</li>
+                    <li class="fragment">Docs: <a href="https://pywb.readthedocs.io">pywb.readthedocs.io</a></li>
+                    <li class="fragment">Code: <a href="https://github.com/webrecorder/pywb">pywb</a></li>
+                </ul>
+            </section>
+            <section>
+                <h3>What if I want to archive through the browser?</h3>
+                <ul>
+                    <li>Create a web archive of a page in 4 line script:</li>
+                    <pre class="left fragment">
+pip install pywb
+wb-manager init my-web-archive
+wayback --proxy my-web-archive --proxy-record --live
+google-chrome http://localhost:8080/my-web-archive<span class="redh">/record/</span>http://example.com/
+                    </pre>
+<li class="fragment">OR</li>
+                    <pre class="left fragment">
+google-chrome --proxy-server=http://localhost:8080 https://example.com/
+                    </pre>
+                </ul>
+            </section>
+            <section>
+                <h3>What if I want to host a wayback machine/provide access?</h3>
+                <ul>
+                    <li>View an archive of with a 4-line script:</li>
+                    <pre class="left fragment">
+pip install pywb
+wb-manager init my-web-archive
+wayback --proxy my-web-archive
+google-chrome http://localhost:8080/my-web-archive/http://example.com/
+                    </pre>
+<li class="fragment">OR</li>
+                    <pre class="left fragment">
+google-chrome --proxy-server=http://localhost:8080 https://example.com/
+                    </pre>
+                </ul>
+            </section>
+
+            <section>
+                <h3>What if I want a simple desktop app for users to browse a web archive?</h3>
+                <h4 class="fragment">Webrecorder Player</h4>
+                <img class="fragment imgsqr" src="img/WRlogo.png"></li>
+                <ul>
+                    <li class="fragment">Electron Desktop App for OSX, Windows, Linux</li>
+                    <li class="fragment">Open and browse any WARC file locally, offline</li>
+                    <li class="fragment">Full Webrecorder App coming soon, with UI consistent with webrecorder.io</li>
+                    <li class="fragment"><a href="https://github.com/webrecorder/webrecorder-player/releases">Releases on Github</a></li>
+                    <li class="fragment">Code: <a href="https://github.com/webrecorder/webrecorder-player">webrecorder-player</a></li>
+            </section>
+
+            <section>
+                <h3>What if I want a specific browser, eg. with Flash?</h3>
+                <h4>Remote Browser System</h4>
+                <ul>
+                    <li class="fragment">Docker containers each containing a web browser</li>
+                    <li class="fragment">Originally developed for <a href="http://oldweb.today/">oldweb.today</a></li>
+                    <li class="fragment">Preserving browsers with Flash, even Java</li>
+                    <li class="fragment">Several versions of Chrome, Firefox</li>
+                    <li class="fragment">Access via VNC + WebRTC</li>
+                    <li class="fragment">Lots of Code: <a href="https://github.com/oldweb-today">github.com/oldweb-today</a></li>
+                    <li class="fragment">Docs still needed</li>
+                </ul>
+            </section>
+
+             <section>
+                <h3>What if I want to try it all!</h3>
+                <h4 class="fragment">webrecorder/webrecorder</h4>
+                <ul>
+                    <li class="fragment">Full system running on webrecorder.io</li>
+                    <li class="fragment">Containerized deployment with Docker Compose</li>
+                    <li class="fragment">Adds user, collection management, friendly UI</li>
+                    <li class="fragment">Integrates Remote Browser System</li>
+                    <li class="fragment">API Backend, React Frontend</li>
+                    <li class="fragment">Code: <a href="https://github.com/webrecorder/webrecorder">webrecorder</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Thank you</h2>
+                <h3>Q &amp; A</h3>
+                <br/>
+                <h5>Contact:<br/><a href="mailto:support@webrecorder.io">support@webrecorder.io</a></h5>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="position:absolute; bottom:1%; left:2%; width:100%; vertical-align: middle">
+        <h5>WARC Files and Beyond</h5>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+
+        // Full list of configuration options available at:
+        // https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            history: true,
+            center: false,
+            margin: 0.05,
+
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+            // Optional reveal.js plugins
+            dependencies: [
+            { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+            { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+            { src: 'plugin/zoom-js/zoom.js', async: true },
+            { src: 'plugin/notes/notes.js', async: true }
+            ]
+        });
+
+    </script>
+
+</body>
+</html>
+
