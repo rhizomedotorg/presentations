@@ -207,8 +207,23 @@ transclusions:
           selector: div.video-container
 ...
 </pre>
+
+
                     <p class="fragment">And <a href="https://github.com/webrecorder/warcit/blob/video-conversion/warcit/default-conversion-rules.yaml">conversion rules</a></p>
-                </section>
+
+    <p class="fragment">Sample conversion record produced:</p>
+<pre class="fragment">
+WARC/1.0
+WARC-Type: conversion
+WARC-Source-URI: file:///path/to/video_file.flv
+WARC-Refers-To-Target-Date: 2019-02-06T00:29:48Z
+WARC-Creation-Date: 2019-03-04T22:44:03Z
+WARC-Refers-To-Target-URI: http://example.com/media/video_file.flv
+WARC-JSON-Metadata: {"command": "ffmpeg -y -i {input} -c:v vp9 -c:a libopus -speed 4 {output}", "mime": "video/webm", "ext": "webm", "name": "webm"}
+WARC-Target-URI: http://example.com/media/video_file.flv.webm
+...
+</pre>
+               </section>
                 <section>
                     <h4>(WIP) How to handle multiple videos per page?</h4>
 
@@ -227,7 +242,7 @@ transclusions:
   "creation_timestamp": "20190301",
 }
 </pre>
-                       <li class="fragment"><a href="https://github.com/webrecorder/warcit/blob/video-conversion/conversions-and-transclusions.md#proposal-multiple-transcluded-objects-per-page">More suggestions in video doc</a></li>
+                       <li class="fragment"><a href="https://github.com/webrecorder/warcit/blob/video-conversion/conversions-and-transclusions.md#proposal-multiple-transcluded-objects-per-page">More suggestions in video on github doc</a></li>
                     </ul>
                 </section>
             </div>
